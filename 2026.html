@@ -74,6 +74,96 @@
 }
 .reg-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(184,216,52,0.5); }
 
+/* Registration intro */
+.registration-section { background: linear-gradient(180deg, #fff 0%, #f7f5f0 100%); padding: 0 24px 64px; min-height: 400px; scroll-margin-top: 92px; }
+.registration-wrap { max-width: 980px; margin: 0 auto; }
+.registration-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
+  gap: 28px;
+  align-items: stretch;
+  margin: 8px 0 36px;
+  padding: 32px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #0a4545 0%, #126f6f 58%, #1a8a6e 100%);
+  color: white;
+  box-shadow: 0 22px 50px rgba(10,69,69,0.18);
+  position: relative;
+  overflow: hidden;
+}
+.registration-content, .registration-facts { position: relative; z-index: 1; }
+.registration-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  background: rgba(184,216,52,0.14);
+  border: 1px solid rgba(184,216,52,0.34);
+  color: #d4eb6e;
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.registration-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(30px, 5vw, 48px);
+  line-height: 1.05;
+  margin-bottom: 14px;
+  font-weight: 800;
+}
+.registration-title span { color: #d4eb6e; }
+.registration-copy {
+  max-width: 560px;
+  color: rgba(255,255,255,0.76);
+  font-size: 16px;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.registration-facts {
+  display: grid;
+  gap: 12px;
+  align-content: center;
+}
+.registration-fact {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 14px;
+  padding: 18px;
+}
+.registration-fact-label {
+  color: rgba(255,255,255,0.56);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.registration-fact-value {
+  color: white;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+.players-list-panel {
+  background: white;
+  border: 1px solid #e8e6e1;
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 12px 34px rgba(10,69,69,0.07);
+}
+.players-list-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid #e8e6e1;
+  padding-bottom: 18px;
+  margin-bottom: 8px;
+}
+
 /* Modal */
 .modal-overlay {
   position: fixed;
@@ -98,6 +188,7 @@
   box-shadow: 0 24px 60px rgba(0,0,0,0.35);
   display: flex;
   flex-direction: column;
+  padding: 18px;
 }
 .modal-close-btn {
   position: absolute;
@@ -115,7 +206,7 @@
   transition: background 0.2s;
 }
 .modal-close-btn:hover { background: rgba(0,0,0,0.16); color: #111; }
-.modal-box iframe { flex: 1; width: 100%; border: none; display: block; }
+.modal-box iframe { flex: 1; width: 100%; border: none; display: block; border-radius: 14px; background: white; }
 
 /* Placeholder */
 .ph-block { text-align: center; padding: 80px 24px; }
@@ -134,6 +225,10 @@
   .modal-box { width: 96vw; height: 92vh; border-radius: 14px; }
   .ptable th, .ptable td { padding: 9px 6px; font-size: 12px; }
   .pphoto { width: 32px; height: 32px; }
+  .registration-section { padding-left: 16px; padding-right: 16px; }
+  .registration-panel { grid-template-columns: 1fr; padding: 24px; border-radius: 16px; }
+  .players-list-panel { padding: 20px 14px; border-radius: 14px; }
+  .players-list-header { display: block; }
 }
 </style>
 </head>
@@ -152,7 +247,7 @@
     <div class="nav-right">
       <a href="index.html" class="nav-link">Дома</a>
       <a href="about.html" class="nav-link">За нас</a>
-      <a href="register.html" class="nav-link">Пријави се</a>
+      <a href="#prijava" class="nav-link" data-open-register-modal>Пријави се</a>
       <a href="partner.html" class="nav-link">Стани партнер</a>
     </div>
     <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
@@ -164,7 +259,7 @@
     <a href="doniraj.html" class="mobile-link">Донирај</a>
     <a href="index.html" class="mobile-link">Дома</a>
     <a href="about.html" class="mobile-link">За нас</a>
-    <a href="register.html" class="mobile-link">Пријави се</a>
+    <a href="#prijava" class="mobile-link" data-open-register-modal>Пријави се</a>
     <a href="partner.html" class="mobile-link">Стани партнер</a>
   </div>
 </nav>
@@ -201,28 +296,48 @@
   </div>
 </div>
 
-<div style="background:#fff; padding: 0 24px 60px; min-height: 400px;">
-  <div style="max-width:900px; margin:0 auto;">
+<div class="registration-section" id="prijava">
+  <div class="registration-wrap">
 
     <!-- TAB 1: ПРИЈАВА -->
     <div class="tab-pane active" id="pane-prijava">
-      <div style="text-align:center; padding: 24px 0 40px;">
-        <button class="reg-btn" onclick="openRegModal()">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-            <circle cx="9" cy="7" r="4"/>
-            <line x1="19" y1="8" x2="19" y2="14"/>
-            <line x1="22" y1="11" x2="16" y2="11"/>
-          </svg>
-          Пријави се
-        </button>
+      <div class="registration-panel">
+        <div class="registration-content">
+          <div class="registration-badge">Регистрација</div>
+          <h2 class="registration-title">Пријави се како <span>играч</span></h2>
+          <p class="registration-copy">Котизација: 3.000 ден. Сите средства одат за хуманитарната мисија.</p>
+          <button class="reg-btn" onclick="openRegModal()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <line x1="19" y1="8" x2="19" y2="14"/>
+              <line x1="22" y1="11" x2="16" y2="11"/>
+            </svg>
+            Пријави се
+          </button>
+        </div>
+        <div class="registration-facts">
+          <div class="registration-fact">
+            <div class="registration-fact-label">Котизација</div>
+            <div class="registration-fact-value">3.000 ден.</div>
+          </div>
+          <div class="registration-fact">
+            <div class="registration-fact-label">Намена</div>
+            <div class="registration-fact-value">100% за хуманитарната мисија</div>
+          </div>
+        </div>
       </div>
 
-      <div style="border-top: 2px solid #e8e6e1; padding-top: 36px;">
-        <h3 class="playfair" style="font-size:22px; color:#0a4545; margin-bottom:6px;">
-          Листа на пријавени натпреварувачи за МО26
-        </h3>
-        <p style="font-size:13px; color:#aaa; margin-bottom:0;">Листата се ажурира автоматски</p>
+      <div class="players-list-panel">
+        <div class="players-list-header">
+          <div>
+            <h3 class="playfair" style="font-size:22px; color:#0a4545; margin-bottom:6px;">
+              Листа на пријавени натпреварувачи за МО26
+            </h3>
+            <p style="font-size:13px; color:#888; margin-bottom:0;">Листата се ажурира автоматски</p>
+          </div>
+          <button class="btn btn-dark-outline" style="padding:10px 22px;font-size:13px;" onclick="openRegModal()">Пријави се</button>
+        </div>
 
         <div id="pl-loading" style="text-align:center;padding:60px 24px;color:#aaa;font-size:15px;">Се вчитува...</div>
 
@@ -297,7 +412,7 @@
       <div class="footer-heading">Навигација</div>
       <a href="index.html" class="footer-link">Дома</a>
       <a href="about.html" class="footer-link">За нас</a>
-      <a href="register.html" class="footer-link">Пријави се</a>
+      <a href="#prijava" class="footer-link" data-open-register-modal>Пријави се</a>
       <a href="partner.html" class="footer-link">Стани партнер</a>
       <a href="doniraj.html" class="footer-link">Донирај</a>
     </div>
@@ -356,6 +471,31 @@ function openRegModal() {
 function closeRegModal() {
   document.getElementById('reg-modal').classList.remove('is-open');
   document.body.style.overflow = '';
+}
+
+function focusRegistrationSection(openModal) {
+  showTab('prijava');
+  var section = document.getElementById('prijava');
+  if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (window.location.hash !== '#prijava') {
+    history.pushState(null, '', '#prijava');
+  }
+  if (openModal) {
+    setTimeout(openRegModal, 260);
+  }
+}
+
+document.querySelectorAll('[data-open-register-modal]').forEach(function(link) {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    var mobileMenu = document.getElementById('mobileMenu');
+    if (mobileMenu) mobileMenu.classList.remove('open');
+    focusRegistrationSection(true);
+  });
+});
+
+if (window.location.hash === '#prijava') {
+  setTimeout(function() { focusRegistrationSection(true); }, 120);
 }
 
 // Close button
