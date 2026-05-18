@@ -92,7 +92,7 @@
             id: f.id,
             name: f.name,
             thumb: 'https://drive.google.com/thumbnail?id=' + f.id + '&sz=w600',
-            full: 'https://drive.google.com/uc?export=view&id=' + f.id
+            full: 'https://drive.google.com/thumbnail?id=' + f.id + '&sz=w1920'
           };
         });
         self._render();
