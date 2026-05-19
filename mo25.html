@@ -8,7 +8,15 @@
 <link rel="stylesheet" href="style.css">
 <style>
 /* Tabs */
-.tabs { display: flex; border-bottom: 3px solid #e8e6e1; margin-bottom: 0; }
+.tabs {
+  display: flex;
+  border-bottom: 3px solid #e8e6e1;
+  margin-bottom: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
 .tab-btn {
   padding: 16px 28px;
   font-family: 'DM Sans', sans-serif;
@@ -21,6 +29,7 @@
   position: relative;
   transition: color 0.3s;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 .tab-btn:hover { color: #1a7a7a; }
 .tab-btn.active { color: #0a4545; }
