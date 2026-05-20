@@ -47,15 +47,27 @@
   </div>
 </div>
 <div style="max-width:560px;margin:0 auto;padding:0 24px 70px">
-  <div class="form-card">
+  <form class="form-card" action="https://api.web3forms.com/submit" method="POST">
     <h3 class="playfair" style="color:var(--teal-deeper);font-size:22px;margin-bottom:28px;text-align:center">Контактирај нè</h3>
-    <label class="form-label">Компанија *</label><input class="form-input" placeholder="Име на компанија">
-    <label class="form-label">Контакт лице *</label><input class="form-input" placeholder="Име и презиме">
-    <div class="form-row"><div><label class="form-label">Email *</label><input class="form-input" type="email" placeholder="email@company.com"></div><div><label class="form-label">Телефон *</label><input class="form-input" type="tel" placeholder="+389..."></div></div>
-    <label class="form-label">Тип на соработка *</label><select class="form-input"><option>Избери...</option><option>Спонзор</option><option>Медиумски партнер</option><option>Партнер во натура</option><option>Институција</option><option>Друго</option></select>
-    <label class="form-label">Порака</label><textarea class="form-input" rows="4" placeholder="Вашата визија за соработка..."></textarea>
-    <button class="form-submit form-submit-lime" onclick="alert('Ви благодариме! Ќе ве контактираме наскоро.')">Испрати барање &rarr;</button>
-  </div>
+    <input type="hidden" name="access_key" value="da132b14-0fe8-47b1-8f40-a86804b58131">
+    <input type="hidden" name="subject" value="Ново барање за партнерство — Mavrovo Open">
+    <input type="hidden" name="from_name" value="Mavrovo Open — Партнерство">
+    <input type="hidden" name="redirect" value="https://mavrovoopen.mk/partner.html?sent=1">
+    <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+    <label class="form-label">Компанија *</label><input class="form-input" name="Компанија" placeholder="Име на компанија" required>
+    <label class="form-label">Контакт лице *</label><input class="form-input" name="Контакт лице" placeholder="Име и презиме" required>
+    <div class="form-row"><div><label class="form-label">Email *</label><input class="form-input" type="email" name="Email" placeholder="email@company.com" required></div><div><label class="form-label">Телефон *</label><input class="form-input" type="tel" name="Телефон" placeholder="+389..." required></div></div>
+    <label class="form-label">Тип на соработка *</label><select class="form-input" name="Тип на соработка" required><option value="">Избери...</option><option>Спонзор</option><option>Медиумски партнер</option><option>Партнер во натура</option><option>Институција</option><option>Друго</option></select>
+    <label class="form-label">Порака</label><textarea class="form-input" name="Порака" rows="4" placeholder="Вашата визија за соработка..."></textarea>
+    <button type="submit" class="form-submit form-submit-lime">Испрати барање &rarr;</button>
+    <div id="partner-thanks" style="display:none;margin-top:18px;padding:14px 18px;background:rgba(184,216,52,0.18);border-left:4px solid var(--lime);border-radius:8px;color:var(--teal-deeper);font-size:14px;font-weight:600;">Ви благодариме! Вашето барање е пратено и ќе ве контактираме наскоро.</div>
+  </form>
+  <script>
+    if (new URLSearchParams(window.location.search).get('sent') === '1') {
+      var t = document.getElementById('partner-thanks');
+      if (t) { t.style.display = 'block'; t.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+    }
+  </script>
 </div>
 
 <footer class="footer">

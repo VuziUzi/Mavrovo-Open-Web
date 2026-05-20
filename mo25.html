@@ -8,7 +8,15 @@
 <link rel="stylesheet" href="style.css">
 <style>
 /* Tabs */
-.tabs { display: flex; border-bottom: 3px solid #e8e6e1; margin-bottom: 0; }
+.tabs {
+  display: flex;
+  border-bottom: 3px solid #e8e6e1;
+  margin-bottom: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
 .tab-btn {
   padding: 16px 28px;
   font-family: 'DM Sans', sans-serif;
@@ -21,6 +29,7 @@
   position: relative;
   transition: color 0.3s;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 .tab-btn:hover { color: #1a7a7a; }
 .tab-btn.active { color: #0a4545; }
@@ -94,6 +103,181 @@
   .predizv-intro { font-size: 14px; }
   .predizv-list { font-size: 13px; }
 }
+
+/* Tournament draw bracket */
+.draw-header { text-align: center; padding: 0 8px; margin-bottom: 18px; }
+.draw-mobile-hint {
+  display: none;
+  font-size: 12px;
+  color: #1a7a7a;
+  text-align: center;
+  padding: 10px 14px;
+  background: rgba(184,216,52,0.14);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+.draw-scroll {
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 4px 4px 16px;
+  margin: 0 -4px;
+  -webkit-overflow-scrolling: touch;
+}
+.draw-scroll::-webkit-scrollbar { height: 10px; }
+.draw-scroll::-webkit-scrollbar-track { background: #f0eee8; border-radius: 4px; }
+.draw-scroll::-webkit-scrollbar-thumb { background: #b8d834; border-radius: 4px; }
+.draw-scroll::-webkit-scrollbar-thumb:hover { background: #a3c128; }
+.draw-bracket {
+  display: flex;
+  gap: 16px;
+  min-width: 1300px;
+  padding: 22px 16px;
+  align-items: stretch;
+  min-height: 720px;
+  background: #d6d8dc;
+  border-radius: 14px;
+  border: 1px solid #b8bcc2;
+  box-shadow: inset 0 1px 2px rgba(10,69,69,0.04);
+  position: relative;
+}
+.draw-round { position: relative; z-index: 1; }
+.bracket-svg { z-index: 0; }
+.draw-round {
+  flex: 0 0 auto;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+}
+.draw-round.col-champion { min-width: 200px; justify-content: center; }
+.draw-round-label {
+  font-size: 10px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: #1a7a7a;
+  font-weight: 800;
+  text-align: center;
+  padding: 9px 6px;
+  border-bottom: 2px solid #b8d834;
+  margin-bottom: 12px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 6px 6px 0 0;
+}
+.draw-matches {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 8px;
+}
+.draw-match {
+  background: white;
+  border: 1px solid #e8e6e1;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(10,69,69,0.04);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.draw-match:hover { box-shadow: 0 8px 18px rgba(10,69,69,0.10); transform: translateY(-1px); }
+.draw-player {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 11px 9px 14px;
+  border-bottom: 1px dashed #ececec;
+  font-size: 12.5px;
+  position: relative;
+  min-height: 36px;
+  color: #555;
+}
+.draw-player:last-child { border-bottom: none; }
+.draw-player.winner {
+  background: rgba(184,216,52,0.10);
+  color: #0a4545;
+  font-weight: 700;
+}
+.draw-player.winner::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 5px; bottom: 5px;
+  width: 3px;
+  background: #b8d834;
+  border-radius: 0 2px 2px 0;
+}
+.dp-name { flex: 1; padding-right: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dp-score { font-size: 11px; color: #999; font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.draw-player.winner .dp-score { color: #1a7a7a; }
+.draw-player.bye { color: #ccc; font-style: italic; }
+.draw-champion-card {
+  background: linear-gradient(135deg, #0a4545 0%, #126f6f 60%, #1a8a6e 100%);
+  border-radius: 16px;
+  padding: 26px 22px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 12px 28px rgba(10,69,69,0.28);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 380px;
+}
+.draw-champion-card::after {
+  content: '';
+  position: absolute;
+  top: -40%; right: -30%;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(184,216,52,0.30) 0%, transparent 70%);
+  pointer-events: none;
+}
+.draw-champion-card .ch-icon { font-size: 42px; margin-bottom: 6px; position: relative; z-index: 1; }
+.draw-champion-card .ch-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 800; color: #d4eb6e; margin-bottom: 8px; position: relative; z-index: 1; }
+.draw-champion-card .ch-name { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 800; line-height: 1.2; color: white; position: relative; z-index: 1; }
+.draw-champion-card.empty { background: #f0eee8; color: #aaa; box-shadow: none; }
+.draw-champion-card.empty .ch-label { color: #aaa; }
+.draw-champion-card.empty .ch-name { color: #aaa; }
+.draw-extra {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 28px;
+  padding: 0 8px;
+}
+.draw-third-card {
+  background: white;
+  border: 1px solid #e8e6e1;
+  border-left: 4px solid #cd7f32;
+  border-radius: 12px;
+  padding: 16px 18px;
+  width: 320px;
+  max-width: 100%;
+  box-shadow: 0 4px 14px rgba(10,69,69,0.06);
+}
+.draw-third-card .dt-label {
+  font-size: 10px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: #cd7f32;
+  font-weight: 800;
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 6px;
+}
+.draw-third-card .draw-match { box-shadow: none; border: 1px solid #f0eee8; }
+@media (max-width: 900px) {
+  .draw-mobile-hint { display: block; }
+  .draw-bracket { min-width: 1300px; gap: 12px; padding: 14px 8px; }
+  .draw-round { min-width: 180px; }
+  .draw-round-label { font-size: 9px; letter-spacing: 1.4px; padding: 7px 4px; margin-bottom: 10px; }
+  .draw-player { padding: 7px 9px 7px 12px; font-size: 11.5px; min-height: 32px; }
+  .dp-score { font-size: 10.5px; }
+  .draw-champion-card { padding: 18px 12px; }
+  .draw-champion-card .ch-icon { font-size: 34px; }
+  .draw-champion-card .ch-name { font-size: 16px; }
+}
+@media (max-width: 600px) {
+  .draw-bracket { min-width: 1180px; }
+  .draw-round { min-width: 160px; }
+}
 </style>
 </head>
 <body>
@@ -136,7 +320,7 @@
   <div style="max-width:900px; margin:0 auto;">
     <div class="tabs">
       <button class="tab-btn active" id="tbtn-predizv" onclick="showTab25('predizv')">Предизвици пред почетокот</button>
-      <button class="tab-btn" id="tbtn-zdrepka" onclick="showTab25('zdrepka')">Ждрепка</button>
+      <button class="tab-btn" id="tbtn-zdrepka" onclick="showTab25('zdrepka')">Резултати</button>
       <button class="tab-btn" id="tbtn-galerija25" onclick="showTab25('galerija')">Галерија</button>
     </div>
   </div>
@@ -147,13 +331,35 @@
 
     <!-- TAB 1 -->
     <div class="tab-pane" id="pane25-zdrepka">
-      <div class="ph-block">
-        <div class="ph-icon">&#127922;</div>
-        <div class="ph-title">Ждрепка &mdash; MO25</div>
-        <div class="ph-text">
-          Информации за ждрепката и распоредот на натпреварувачите од MO25.<br>
-          Следувајте нè на <a href="https://www.instagram.com/mavrovo.open/" target="_blank" style="color:#1a7a7a;font-weight:600">@mavrovo.open</a>.
+      <div class="draw-header">
+        <h3 class="playfair" style="font-size:24px; color:#0a4545; margin-bottom:8px;">Резултати &mdash; MO25</h3>
+        <p style="font-size:14px; color:#888; margin:0;">Турнирска ждрепка и резултати од натпреварите</p>
+      </div>
+
+      <div id="draw-loading" style="text-align:center;padding:60px 24px;color:#aaa;font-size:15px;">Се вчитува...</div>
+
+      <div id="draw-empty" style="display:none;">
+        <div class="ph-block">
+          <div class="ph-icon">&#127934;</div>
+          <div class="ph-title">Наскоро</div>
+          <div class="ph-text">Резултатите од турнирот ќе бидат објавени по завршувањето.</div>
         </div>
+      </div>
+
+      <div id="draw-error" style="display:none;">
+        <div class="ph-block">
+          <div class="ph-icon">&#9888;&#65039;</div>
+          <div class="ph-title">Не може да се вчита</div>
+          <div class="ph-text">Проблем со вчитување на резултатите. Обиди се повторно.</div>
+        </div>
+      </div>
+
+      <div id="draw-content" style="display:none;">
+        <div class="draw-mobile-hint">&#8596; Помести лево/десно за да ја видиш целата ждрепка</div>
+        <div class="draw-scroll">
+          <div class="draw-bracket" id="draw-bracket"></div>
+        </div>
+        <div class="draw-extra" id="draw-extra"></div>
       </div>
     </div>
 
@@ -258,6 +464,266 @@ function showTab25(name) {
 
 new DriveGallery({ containerId: 'drive-gallery-mo25', folderId: '1qyhxkPkwu6P5iqgjJi-jduhpKPZuiaAv' });
 new DriveSponsors({ containerId: 'sponsors-mo25', folderId: '13eTezfAQOJDiEDUjmEN80XNFzu8Idb5r' });
+
+// ---- TOURNAMENT DRAW (Draw25 sheet) ----
+(function() {
+  var SHEET_ID   = '1fykfBEQdx_th9MOd4zlGfAuTl5IWizt-Ln-BBDhhosM';
+  var SHEET_NAME = 'Draw25';
+
+  var loading = document.getElementById('draw-loading');
+  var empty   = document.getElementById('draw-empty');
+  var errDiv  = document.getElementById('draw-error');
+  var content = document.getElementById('draw-content');
+  var bracket = document.getElementById('draw-bracket');
+  var extra   = document.getElementById('draw-extra');
+
+  if (!loading || !empty || !errDiv || !content || !bracket || !extra) return;
+
+  function hideAll() {
+    loading.style.display = 'none';
+    empty.style.display   = 'none';
+    errDiv.style.display  = 'none';
+    content.style.display = 'none';
+  }
+  function showEmpty() { hideAll(); empty.style.display = 'block'; }
+  function showError() { hideAll(); errDiv.style.display = 'block'; }
+
+  function escapeHtml(v) {
+    return String(v == null ? '' : v)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+  }
+  function getCell(row, idx) {
+    if (!row || !row.c || !row.c[idx]) return '';
+    var c = row.c[idx];
+    if (c.f != null && String(c.f).trim() !== '') return String(c.f).trim();
+    if (c.v != null && String(c.v).trim() !== '') return String(c.v).trim();
+    return '';
+  }
+
+  // Match dash separators: em-dash, en-dash, hyphen surrounded by spaces
+  var SEP = '\\s+[\\u2014\\u2013\\-]\\s+';
+
+  function parseDefMatch(str) {
+    if (!str) return null;
+    var re = new RegExp('^(.+?)\\s+def\\.?\\s+(.+?)' + SEP + '(.+)$', 'i');
+    var m = String(str).match(re);
+    if (m) return { winner: m[1].trim(), loser: m[2].trim(), score: m[3].trim() };
+    return null;
+  }
+  function parseNameScore(str) {
+    if (!str) return null;
+    var re = new RegExp('^(.+?)' + SEP + '(.+)$');
+    var m = String(str).match(re);
+    if (m) return { name: m[1].trim(), score: m[2].trim() };
+    return { name: String(str).trim(), score: '' };
+  }
+  function sameName(a, b) {
+    if (!a || !b) return false;
+    return a.trim().toLowerCase() === b.trim().toLowerCase();
+  }
+
+  function playerRow(name, score, isWinner) {
+    if (!name) {
+      return '<div class="draw-player bye"><span class="dp-name">&mdash;</span><span class="dp-score"></span></div>';
+    }
+    var cls = isWinner ? 'draw-player winner' : 'draw-player';
+    return '<div class="' + cls + '">'
+      + '<span class="dp-name">' + escapeHtml(name) + '</span>'
+      + '<span class="dp-score">' + escapeHtml(score || '') + '</span>'
+      + '</div>';
+  }
+  function matchBox(p1, p2, winnerName, score) {
+    var w1 = sameName(p1, winnerName);
+    var w2 = sameName(p2, winnerName);
+    return '<div class="draw-match">'
+      + playerRow(p1, w1 ? score : '', w1)
+      + playerRow(p2, w2 ? score : '', w2)
+      + '</div>';
+  }
+  function buildRound(label, matchesHtml, extraClass) {
+    return '<div class="draw-round ' + (extraClass || '') + '">'
+      + '<div class="draw-round-label">' + label + '</div>'
+      + '<div class="draw-matches">' + matchesHtml + '</div>'
+      + '</div>';
+  }
+
+  function render(data) {
+    if (!data || data.status === 'error' || !data.table || !data.table.rows) { showError(); return; }
+    var rows = data.table.rows || [];
+    if (rows.length < 2) { showEmpty(); return; }
+
+    // Round 1: 16 matches. Players in column A pair (row 2&3), (row 4&5), ...
+    // Winner+score in column B at the first row of each pair.
+    var r1Html = '', r1Winners = [];
+    for (var i = 0; i < 16; i++) {
+      var p1 = getCell(rows[i*2],     0);
+      var p2 = getCell(rows[i*2 + 1], 0);
+      var w  = parseNameScore(getCell(rows[i*2], 1));
+      var wn = w ? w.name : '';
+      r1Winners.push(wn);
+      r1Html += matchBox(p1, p2, wn, w ? w.score : '');
+    }
+
+    // Round 2: 8 matches. Pair R1 winners (0,1), (2,3), ...
+    // Winner+score in column C at rows 0, 4, 8, 12, 16, 20, 24, 28.
+    var r2Html = '';
+    for (var j = 0; j < 8; j++) {
+      var w2 = parseNameScore(getCell(rows[j*4], 2));
+      r2Html += matchBox(r1Winners[j*2], r1Winners[j*2 + 1], w2 ? w2.name : '', w2 ? w2.score : '');
+    }
+
+    // QF: 4 matches as "X def Y — score" at rows 0, 4, 8, 12 in column D
+    var qfHtml = '';
+    for (var k = 0; k < 4; k++) {
+      var qf = parseDefMatch(getCell(rows[k*4], 3));
+      qfHtml += qf
+        ? matchBox(qf.winner, qf.loser, qf.winner, qf.score)
+        : matchBox('', '', '', '');
+    }
+
+    // SF: 2 matches at rows 0, 8 in column E
+    var sfHtml = '';
+    for (var l = 0; l < 2; l++) {
+      var sf = parseDefMatch(getCell(rows[l*8], 4));
+      sfHtml += sf
+        ? matchBox(sf.winner, sf.loser, sf.winner, sf.score)
+        : matchBox('', '', '', '');
+    }
+
+    // Final: row 0, column F
+    var fin = parseDefMatch(getCell(rows[0], 5));
+    var fHtml = fin
+      ? matchBox(fin.winner, fin.loser, fin.winner, fin.score)
+      : matchBox('', '', '', '');
+
+    // Champion: column G, fallback to final winner
+    var champ = getCell(rows[0], 6);
+    if (!champ && fin) champ = fin.winner;
+    var champHtml = champ
+      ? '<div class="draw-champion-card">'
+        + '<div class="ch-icon">&#127942;</div>'
+        + '<div class="ch-label">Шампион</div>'
+        + '<div class="ch-name">' + escapeHtml(champ) + '</div>'
+        + '</div>'
+      : '<div class="draw-champion-card empty">'
+        + '<div class="ch-icon">&#127942;</div>'
+        + '<div class="ch-label">Шампион</div>'
+        + '<div class="ch-name">&mdash;</div>'
+        + '</div>';
+
+    bracket.innerHTML = ''
+      + buildRound('1-во коло',     r1Html)
+      + buildRound('2-ро коло',     r2Html)
+      + buildRound('Четвртфинале',  qfHtml)
+      + buildRound('Полуфинале',    sfHtml)
+      + buildRound('Финале',        fHtml);
+
+    // 3rd place: column H
+    var third = parseDefMatch(getCell(rows[0], 7));
+    var thirdHtml = third
+      ? '<div class="draw-third-card">'
+        + '<div class="dt-label"><span>&#129353;</span> 3-то место</div>'
+        + matchBox(third.winner, third.loser, third.winner, third.score)
+        + '</div>'
+      : '';
+
+    extra.innerHTML = champHtml + thirdHtml;
+
+    hideAll();
+    content.style.display = 'block';
+
+    requestAnimationFrame(drawConnectors);
+  }
+
+  function drawConnectors() {
+    var old = bracket.querySelector('.bracket-svg');
+    if (old) old.parentNode.removeChild(old);
+
+    var bRect  = bracket.getBoundingClientRect();
+    var rounds = Array.prototype.slice.call(bracket.querySelectorAll('.draw-round'));
+    if (rounds.length < 2) return;
+
+    var svgNS = 'http://www.w3.org/2000/svg';
+    var svg   = document.createElementNS(svgNS, 'svg');
+    svg.classList.add('bracket-svg');
+    var W = bracket.scrollWidth || bracket.offsetWidth;
+    var H = bracket.scrollHeight || bracket.offsetHeight;
+    svg.setAttribute('width', W);
+    svg.setAttribute('height', H);
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    svg.setAttribute('preserveAspectRatio', 'none');
+    svg.style.cssText = 'position:absolute;top:0;left:0;width:' + W + 'px;height:' + H + 'px;pointer-events:none;overflow:visible;flex:none;';
+
+    for (var r = 0; r < rounds.length - 1; r++) {
+      var srcM = Array.prototype.slice.call(rounds[r].querySelectorAll('.draw-match'));
+      var dstM = Array.prototype.slice.call(rounds[r+1].querySelectorAll('.draw-match'));
+
+      for (var m = 0; m < dstM.length; m++) {
+        var a = srcM[m*2], b = srcM[m*2+1], d = dstM[m];
+        if (!a || !b || !d) continue;
+
+        var ar = a.getBoundingClientRect();
+        var br = b.getBoundingClientRect();
+        var dr = d.getBoundingClientRect();
+
+        var x1 = ar.right  - bRect.left, y1 = (ar.top  + ar.bottom) / 2 - bRect.top;
+        var x2 = br.right  - bRect.left, y2 = (br.top  + br.bottom) / 2 - bRect.top;
+        var xd = dr.left   - bRect.left, yd = (dr.top  + dr.bottom) / 2 - bRect.top;
+        var mx = (x1 + xd) / 2;
+        var my = (y1 + y2) / 2;
+
+        var path = document.createElementNS(svgNS, 'path');
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', '#000');
+        path.setAttribute('stroke-width', '2');
+        path.setAttribute('stroke-linecap', 'round');
+        path.setAttribute('stroke-linejoin', 'round');
+        // Bracket shape: src1→midX → vertical down → back to src2 right edge; then midX midpoint → dst left
+        path.setAttribute('d',
+          'M' + x1 + ',' + y1 + ' H' + mx
+          + ' V' + y2 + ' H' + x2
+          + ' M' + mx + ',' + my + ' H' + xd
+        );
+        svg.appendChild(path);
+      }
+    }
+
+    bracket.insertBefore(svg, bracket.firstChild);
+  }
+
+  var cbName = 'drawCallback_' + Date.now();
+  window[cbName] = function(data) { cleanup(); render(data); };
+
+  function cleanup() {
+    var s = document.getElementById('draw-jsonp');
+    if (s && s.parentNode) s.parentNode.removeChild(s);
+    setTimeout(function() { try { delete window[cbName]; } catch(e) { window[cbName] = undefined; } }, 0);
+  }
+
+  function load() {
+    loading.style.display = 'block';
+    content.style.display = 'none';
+    empty.style.display   = 'none';
+    errDiv.style.display  = 'none';
+
+    var url = 'https://docs.google.com/spreadsheets/d/' + encodeURIComponent(SHEET_ID)
+      + '/gviz/tq?sheet=' + encodeURIComponent(SHEET_NAME)
+      + '&headers=1'
+      + '&tq=' + encodeURIComponent('select A,B,C,D,E,F,G,H')
+      + '&tqx=' + encodeURIComponent('out:json;responseHandler:' + cbName)
+      + '&cacheBust=' + Date.now();
+
+    var s = document.createElement('script');
+    s.id = 'draw-jsonp'; s.src = url; s.async = true;
+    s.onerror = function() { cleanup(); showError(); };
+    document.body.appendChild(s);
+
+    setTimeout(function() { if (window[cbName]) { cleanup(); showError(); } }, 10000);
+  }
+
+  load();
+})();
 </script>
 </body>
 </html>

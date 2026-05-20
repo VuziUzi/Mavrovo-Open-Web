@@ -6,6 +6,46 @@
 <title>Ранг листа | Mavrovo Open 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<style>
+.rank-section { background: linear-gradient(180deg, #fff 0%, #f7f5f0 100%); padding: 0 24px 64px; min-height: 400px; }
+.rank-wrap { max-width: 980px; margin: 0 auto; padding-top: 48px; }
+.players-list-panel { background: white; border: 1px solid #e8e6e1; border-radius: 18px; padding: 30px; box-shadow: 0 12px 34px rgba(10,69,69,0.07); }
+.players-list-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; border-bottom: 1px solid #e8e6e1; padding-bottom: 18px; margin-bottom: 8px; }
+.ptable { width: 100%; border-collapse: collapse; margin-top: 28px; }
+.ptable th { text-align: left; padding: 12px 14px; font-size: 11px; font-weight: 700; color: #1a7a7a; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 2px solid #b8d834; }
+.ptable td { padding: 18px 14px; font-size: 14px; color: #1a1a1a; border-bottom: 1px solid #e8e6e1; vertical-align: middle; }
+.ptable tr:hover td { background: rgba(26,122,122,0.04); }
+.pphoto { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #e8e6e1; display: block; }
+.pindex { font-weight: 700; color: #1a7a7a; font-size: 13px; }
+.prank { display: inline-block; background: #f7f5f0; padding: 3px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; color: #0f5e5e; }
+.ppts { display: inline-block; background: #e8f7a0; padding: 3px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; color: #3d5c00; }
+.pdefault-photo { width: 40px; height: 40px; border-radius: 50%; background: #f7f5f0; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.ptable tr.rank-gold td { background: rgba(255,215,0,0.07); }
+.ptable tr.rank-silver td { background: rgba(192,192,192,0.08); }
+.ptable tr.rank-bronze td { background: rgba(205,127,50,0.07); }
+.rl-tabs { display: flex; gap: 8px; margin: 18px 0 6px; border-bottom: 1px solid #e8e6e1; }
+.rl-tab {
+  background: transparent; border: none; cursor: pointer;
+  padding: 12px 22px; font-size: 14px; font-weight: 700;
+  color: #888; letter-spacing: 0.5px;
+  border-bottom: 3px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+  font-family: inherit;
+}
+.rl-tab:hover { color: #1a7a7a; }
+.rl-tab.active { color: #0a4545; border-bottom-color: #b8d834; }
+.ph-title { font-family: 'Playfair Display', serif; font-size: 22px; color: #0a4545; margin-bottom: 12px; }
+.ph-text { font-size: 15px; color: #888; max-width: 440px; margin: 0 auto; line-height: 1.65; }
+@media (max-width: 600px) {
+  .rank-section { padding-left: 16px; padding-right: 16px; }
+  .rank-wrap { padding-top: 32px; }
+  .players-list-panel { padding: 20px 14px; border-radius: 14px; }
+  .players-list-header { display: block; }
+  .ptable th, .ptable td { padding: 9px 6px; font-size: 12px; }
+  .pphoto { width: 32px; height: 32px; }
+  .ptable th:nth-child(4), .ptable td:nth-child(4) { display: none; }
+}
+</style>
 </head>
 <body>
 <nav class="nav" id="navbar">
@@ -37,12 +77,49 @@
   <div class="hero-badge">Ранг листа</div>
   <h1 class="playfair" style="color:white;font-size:clamp(30px,5vw,48px);margin-bottom:14px">Ранг листа</h1>
 </div>
-<div class="placeholder-page">
-  <div>
-    <div style="font-size:60px;margin-bottom:20px">🎾</div>
-    <h2 class="playfair" style="color:var(--teal-deeper);font-size:28px;margin-bottom:14px">Наскоро</h2>
-    <p style="color:#666;font-size:16px;max-width:400px;line-height:1.6">Ранг листата на играчите ќе биде објавена наскоро.</p>
-    <a href="index.html" class="btn btn-lime" style="margin-top:30px;display:inline-block">Назад на почетна</a>
+<div class="rank-section">
+  <div class="rank-wrap">
+    <div class="players-list-panel">
+      <div class="players-list-header">
+        <div>
+          <h3 class="playfair" style="font-size:22px; color:#0a4545; margin-bottom:6px;">Ранг листа на играчи</h3>
+          <p style="font-size:13px; color:#888; margin-bottom:0;">Листата се ажурира автоматски</p>
+        </div>
+      </div>
+
+      <div class="rl-tabs">
+        <button type="button" class="rl-tab active" data-gender="men">Мажи</button>
+        <button type="button" class="rl-tab" data-gender="women">Жени</button>
+      </div>
+
+      <div id="rl-loading" style="text-align:center;padding:60px 24px;color:#aaa;font-size:15px;">Се вчитува...</div>
+
+      <div id="rl-empty" style="display:none; text-align:center; padding:60px 24px;">
+        <div style="font-size:48px;margin-bottom:16px;">🎾</div>
+        <div class="ph-title">Наскоро</div>
+        <div class="ph-text">Ранг листата на играчите ќе биде објавена наскоро.</div>
+      </div>
+
+      <div id="rl-error" style="display:none; text-align:center; padding:60px 24px;">
+        <div style="font-size:48px;margin-bottom:16px;">⚠️</div>
+        <div class="ph-title">Не може да се вчита</div>
+        <div class="ph-text">Проблем со вчитување на ранг листата. Обиди се повторно.</div>
+      </div>
+
+      <table class="ptable" id="rl-table" style="display:none;">
+        <thead>
+          <tr>
+            <th style="width:44px">#</th>
+            <th style="width:52px"></th>
+            <th>Играч</th>
+            <th>Датум на раѓање</th>
+            <th>Ранг</th>
+            <th>Поени</th>
+          </tr>
+        </thead>
+        <tbody id="rl-tbody"></tbody>
+      </table>
+    </div>
   </div>
 </div>
 
@@ -82,5 +159,157 @@
   <button class="lightbox-nav lightbox-next" onclick="event.stopPropagation();nextImg()">&#8250;</button>
 </div>
 <script src="script.js"></script>
+<script>
+(function() {
+  var SHEET_ID = '1fykfBEQdx_th9MOd4zlGfAuTl5IWizt-Ln-BBDhhosM';
+  var SHEETS = { men: 'Rank List Men', women: 'Rank List Women' };
+  var currentGender = 'men';
+
+  var loading = document.getElementById('rl-loading');
+  var empty   = document.getElementById('rl-empty');
+  var errDiv  = document.getElementById('rl-error');
+  var table   = document.getElementById('rl-table');
+  var tbody   = document.getElementById('rl-tbody');
+
+  if (!loading || !empty || !errDiv || !table || !tbody) return;
+
+  function hideAll() {
+    loading.style.display = 'none';
+    empty.style.display   = 'none';
+    errDiv.style.display  = 'none';
+  }
+
+  function escapeHtml(v) {
+    return String(v == null ? '' : v)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+  }
+
+  function normalizeUrl(url) {
+    url = String(url || '').trim();
+    var m = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+    if (m && m[1]) return 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(m[1]) + '&sz=w160';
+    return url;
+  }
+
+  function getCell(row, idx) {
+    if (!row || !row.c || !row.c[idx]) return '';
+    var c = row.c[idx];
+    if (c.f != null && String(c.f).trim() !== '') return String(c.f).trim();
+    if (c.v != null && String(c.v).trim() !== '') return String(c.v).trim();
+    return '';
+  }
+
+  var MEDALS       = ['🥇','🥈','🥉'];
+  var MEDAL_CLASSES = ['rank-gold','rank-silver','rank-bronze'];
+
+  function render(data) {
+    hideAll();
+    tbody.innerHTML = '';
+
+    if (!data || data.status === 'error' || !data.table || !data.table.rows) { showError(); return; }
+
+    // Sheet "Rank List" columns:
+    // A = index (skipped via select B,C,D,E,F)
+    // result index 0 = B = Link to Photo
+    // result index 1 = C = Name and Surname
+    // result index 2 = D = Birth Date
+    // result index 3 = E = Ranking
+    // result index 4 = F = Points
+    var valid = (data.table.rows || []).filter(function(r) { return getCell(r, 1) !== ''; });
+
+    if (valid.length === 0) { table.style.display = 'none'; empty.style.display = 'block'; return; }
+
+    tbody.innerHTML = valid.map(function(row, i) {
+      var photo = normalizeUrl(getCell(row, 0));
+      var name  = getCell(row, 1);
+      var birth = getCell(row, 2);
+      var rank  = getCell(row, 3) || '—';
+      var pts   = getCell(row, 4) || '—';
+
+      var rowClass = i < 3 ? ' class="' + MEDAL_CLASSES[i] + '"' : '';
+
+      var photoHtml = photo
+        ? '<img src="' + escapeHtml(photo) + '" class="pphoto" alt="' + escapeHtml(name) + '" loading="lazy" referrerpolicy="no-referrer" onerror="this.outerHTML=\'<div class=&quot;pdefault-photo&quot;>🎾</div>\'">'
+        : '<div class="pdefault-photo">🎾</div>';
+
+      var rankCell = i < 3
+        ? '<span style="font-size:22px;line-height:1">' + MEDALS[i] + '</span>'
+        : '<span class="prank">' + escapeHtml(rank) + '</span>';
+
+      return '<tr' + rowClass + '>'
+        + '<td><span class="pindex">' + (i + 1) + '</span></td>'
+        + '<td>' + photoHtml + '</td>'
+        + '<td style="font-weight:600;">' + escapeHtml(name) + '</td>'
+        + '<td style="color:#888;">' + escapeHtml(birth || '—') + '</td>'
+        + '<td>' + rankCell + '</td>'
+        + '<td><span class="ppts">' + escapeHtml(pts) + '</span></td>'
+        + '</tr>';
+    }).join('');
+
+    table.style.display = 'table';
+  }
+
+  function showError() {
+    loading.style.display = 'none';
+    table.style.display   = 'none';
+    empty.style.display   = 'none';
+    errDiv.style.display  = 'block';
+  }
+
+  function load(gender) {
+    currentGender = gender;
+    var sheetName = SHEETS[gender];
+
+    loading.style.display = 'block';
+    table.style.display   = 'none';
+    empty.style.display   = 'none';
+    errDiv.style.display  = 'none';
+
+    var cbName = 'rlCallback_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
+    var scriptId = 'rl-jsonp-' + cbName;
+
+    function cleanup() {
+      var s = document.getElementById(scriptId);
+      if (s && s.parentNode) s.parentNode.removeChild(s);
+      setTimeout(function() { try { delete window[cbName]; } catch(e) { window[cbName] = undefined; } }, 0);
+    }
+
+    window[cbName] = function(data) {
+      if (gender !== currentGender) { cleanup(); return; }
+      cleanup();
+      render(data);
+    };
+
+    var url = 'https://docs.google.com/spreadsheets/d/' + encodeURIComponent(SHEET_ID)
+      + '/gviz/tq?sheet=' + encodeURIComponent(sheetName)
+      + '&headers=1'
+      + '&tq=' + encodeURIComponent('select B,C,D,E,F')
+      + '&tqx=' + encodeURIComponent('out:json;responseHandler:' + cbName)
+      + '&cacheBust=' + Date.now();
+
+    var s = document.createElement('script');
+    s.id = scriptId; s.src = url; s.async = true;
+    s.onerror = function() { cleanup(); if (gender === currentGender) showError(); };
+    document.body.appendChild(s);
+
+    setTimeout(function() {
+      if (window[cbName]) { cleanup(); if (gender === currentGender) showError(); }
+    }, 10000);
+  }
+
+  var tabs = document.querySelectorAll('.rl-tab');
+  Array.prototype.forEach.call(tabs, function(btn) {
+    btn.addEventListener('click', function() {
+      var g = btn.getAttribute('data-gender');
+      if (g === currentGender) return;
+      Array.prototype.forEach.call(tabs, function(b) { b.classList.toggle('active', b === btn); });
+      load(g);
+    });
+  });
+
+  load('men');
+})();
+</script>
 </body>
 </html>

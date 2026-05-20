@@ -135,23 +135,13 @@ a { text-decoration: none; color: inherit; }
 .nav-left { flex: 1; justify-content: flex-start; }
 .nav-right { flex: 1; justify-content: flex-end; }
 
-/* MO26 nav highlight */
-.nav-link-mo26 {
-  background: var(--lime) !important;
-  color: var(--teal-deeper) !important;
-  border-radius: 20px;
+/* MO26 nav highlight — lime text, no chip */
+.nav-link-mo26:not(.active) {
+  color: var(--lime) !important;
   font-weight: 800 !important;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 8px rgba(184,216,52,0.35);
-  animation: mo26-pulse 2.5s ease-in-out infinite;
 }
-.nav-link-mo26:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(184,216,52,0.55) !important;
-}
-@keyframes mo26-pulse {
-  0%, 100% { box-shadow: 0 2px 8px rgba(184,216,52,0.35); }
-  50% { box-shadow: 0 2px 16px rgba(184,216,52,0.65); }
+.nav-link-mo26:not(.active):hover {
+  color: #d4f040 !important;
 }
 
 /* Drive Gallery */
