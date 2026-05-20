@@ -121,7 +121,10 @@ a { text-decoration: none; color: inherit; }
 .footer-link:hover { color: white; }
 .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; max-width: 1000px; margin: 0 auto; }
 .drone-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
-.drone-img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 12px; }
+.drone-photos-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+.drone-map-row { margin-bottom: 32px; }
+.drone-img { width: 100%; height: 260px; object-fit: cover; display: block; border-radius: 12px; }
+@media (max-width: 600px) { .drone-photos-row { grid-template-columns: 1fr; } .drone-img { height: 200px; } }
 .placeholder-page { min-height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 40px 24px; }
 
 @media (max-width: 768px) {
