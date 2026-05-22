@@ -15,6 +15,10 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://mavrovoopen.com/og-image.jpg">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=4">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon.png?v=4">
+  <link rel="shortcut icon" type="image/png" href="favicon.png?v=4">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon.png?v=4">
 <style>
 .rank-section { background: linear-gradient(180deg, #fff 0%, #f7f5f0 100%); padding: 0 24px 64px; min-height: 400px; }
 .rank-wrap { max-width: 980px; margin: 0 auto; padding-top: 48px; }
@@ -24,7 +28,8 @@
 .ptable th { text-align: left; padding: 12px 14px; font-size: 11px; font-weight: 700; color: #1a7a7a; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 2px solid #b8d834; }
 .ptable td { padding: 18px 14px; font-size: 14px; color: #1a1a1a; border-bottom: 1px solid #e8e6e1; vertical-align: middle; }
 .ptable tr:hover td { background: rgba(26,122,122,0.04); }
-.pphoto { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #e8e6e1; display: block; }
+.pphoto { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #e8e6e1; display: block; cursor: zoom-in; transition: transform 0.15s, border-color 0.15s; }
+.pphoto:hover { transform: scale(1.08); border-color: #b8d834; }
 .pindex { font-weight: 700; color: #1a7a7a; font-size: 13px; }
 .prank { display: inline-block; background: #f7f5f0; padding: 3px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; color: #0f5e5e; }
 .ppts { display: inline-block; background: #e8f7a0; padding: 3px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; color: #3d5c00; }
@@ -317,6 +322,38 @@
   });
 
   load('men');
+})();
+
+// ---- PHOTO LIGHTBOX (player photos in tables) ----
+(function() {
+  if (window.__photoLbReady) return;
+  window.__photoLbReady = true;
+
+  var lb = document.createElement('div');
+  lb.id = 'photo-lb';
+  lb.className = 'lightbox';
+  lb.innerHTML = '<button class="lightbox-close" type="button" aria-label="Затвори">&times;</button><img alt="">';
+  document.body.appendChild(lb);
+
+  var lbImg   = lb.querySelector('img');
+  var lbClose = lb.querySelector('.lightbox-close');
+
+  function open(src) { lbImg.src = src; lb.classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function close()   { lb.classList.remove('open'); lbImg.src = ''; document.body.style.overflow = ''; }
+
+  lb.addEventListener('click', function(e) { if (e.target === lb || e.target === lbClose) close(); });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && lb.classList.contains('open')) close();
+  });
+
+  document.body.addEventListener('click', function(e) {
+    var t = e.target;
+    if (!t || !t.classList || !t.classList.contains('pphoto')) return;
+    var src = t.getAttribute('src') || '';
+    if (!src) return;
+    var big = src.replace(/([?&])sz=w\d+/, '$1sz=w1600');
+    open(big);
+  });
 })();
 </script>
 </body>

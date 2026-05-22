@@ -15,6 +15,10 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://mavrovoopen.com/og-image.jpg">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=4">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon.png?v=4">
+  <link rel="shortcut icon" type="image/png" href="favicon.png?v=4">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon.png?v=4">
 <style>
 /* Tabs */
 .tabs {
@@ -67,7 +71,8 @@
 }
 .ptable td { padding: 13px 14px; font-size: 14px; color: #1a1a1a; border-bottom: 1px solid #e8e6e1; vertical-align: middle; }
 .ptable tr:hover td { background: rgba(26,122,122,0.03); }
-.pphoto { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #e8e6e1; display: block; }
+.pphoto { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #e8e6e1; display: block; cursor: zoom-in; transition: transform 0.15s, border-color 0.15s; }
+.pphoto:hover { transform: scale(1.08); border-color: #b8d834; }
 .pindex { font-weight: 700; color: #1a7a7a; font-size: 13px; }
 .prank { display: inline-block; background: #f7f5f0; padding: 3px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; color: #0f5e5e; }
 .pdefault-photo { width: 40px; height: 40px; border-radius: 50%; background: #f7f5f0; display: flex; align-items: center; justify-content: center; font-size: 18px; }
@@ -225,6 +230,38 @@
 }
 .modal-close-btn:hover { background: rgba(0,0,0,0.16); color: #111; }
 .modal-box iframe { flex: 1; width: 100%; border: none; display: block; border-radius: 14px; background: white; }
+
+/* Gender sub-tabs (inside Пријава players list) */
+.pl-gender-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 18px 0 6px;
+  border-bottom: 1px solid #e8e6e1;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.pl-gender-tabs::-webkit-scrollbar { display: none; }
+.pl-gender-tab {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 12px 22px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #888;
+  letter-spacing: 0.5px;
+  border-bottom: 3px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+  font-family: inherit;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.pl-gender-tab:hover { color: #1a7a7a; }
+.pl-gender-tab.active { color: #0a4545; border-bottom-color: #b8d834; }
+@media (max-width: 600px) {
+  .pl-gender-tab { padding: 10px 16px; font-size: 13px; }
+}
 
 /* Placeholder */
 .ph-block { text-align: center; padding: 80px 24px; }
@@ -389,6 +426,11 @@
             <p style="font-size:13px; color:#888; margin-bottom:0;">Листата се ажурира автоматски</p>
           </div>
           <button class="btn btn-dark-outline" style="padding:10px 22px;font-size:13px;" onclick="openRegModal()">Натпреварувај се</button>
+        </div>
+
+        <div class="pl-gender-tabs">
+          <button type="button" class="pl-gender-tab active" data-gender="men">Мажи</button>
+          <button type="button" class="pl-gender-tab" data-gender="women">Жени</button>
         </div>
 
         <div id="pl-loading" style="text-align:center;padding:60px 24px;color:#aaa;font-size:15px;">Се вчитува...</div>
@@ -580,7 +622,8 @@ document.addEventListener('keydown', function(e) {
 // tag, so it does not require Access-Control-Allow-Origin headers.
 (function() {
   var SHEET_ID = '1fykfBEQdx_th9MOd4zlGfAuTl5IWizt-Ln-BBDhhosM';
-  var SHEET_NAME = 'Acceptance List';
+  var SHEETS = { men: 'Acceptance List Men', women: 'Acceptance List Women' };
+  var currentGender = 'men';
 
   var loading = document.getElementById('pl-loading');
   var empty   = document.getElementById('pl-empty');
@@ -686,61 +729,106 @@ document.addEventListener('keydown', function(e) {
     errDiv.style.display = 'block';
   }
 
-  // JSONP callback name must be global because Google calls it from the injected script.
-  var callbackName = 'mo26PlayersCallback_' + Date.now();
+  function loadPlayers(gender) {
+    currentGender = gender;
+    var sheetName = SHEETS[gender];
 
-  window[callbackName] = function(data) {
-    cleanup();
-    renderPlayers(data);
-  };
-
-  function cleanup() {
-    var oldScript = document.getElementById('mo26-players-jsonp');
-    if (oldScript && oldScript.parentNode) oldScript.parentNode.removeChild(oldScript);
-
-    // Leave cleanup slightly delayed so callback finishes safely in all browsers.
-    setTimeout(function() {
-      try { delete window[callbackName]; } catch (e) { window[callbackName] = undefined; }
-    }, 0);
-  }
-
-  function loadPlayers() {
     loading.style.display = 'block';
     table.style.display = 'none';
     empty.style.display = 'none';
     errDiv.style.display = 'none';
 
+    var callbackName = 'mo26PlayersCallback_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
+    var scriptId = 'mo26-players-jsonp-' + callbackName;
+
+    function cleanup() {
+      var oldScript = document.getElementById(scriptId);
+      if (oldScript && oldScript.parentNode) oldScript.parentNode.removeChild(oldScript);
+      setTimeout(function() {
+        try { delete window[callbackName]; } catch (e) { window[callbackName] = undefined; }
+      }, 0);
+    }
+
+    window[callbackName] = function(data) {
+      if (gender !== currentGender) { cleanup(); return; }
+      cleanup();
+      renderPlayers(data);
+    };
+
     var query = 'select A,B,C,D';
     var url = 'https://docs.google.com/spreadsheets/d/' + encodeURIComponent(SHEET_ID)
       + '/gviz/tq?'
-      + 'sheet=' + encodeURIComponent(SHEET_NAME)
+      + 'sheet=' + encodeURIComponent(sheetName)
       + '&headers=1'
       + '&tq=' + encodeURIComponent(query)
       + '&tqx=' + encodeURIComponent('out:json;responseHandler:' + callbackName)
       + '&cacheBust=' + Date.now();
 
     var script = document.createElement('script');
-    script.id = 'mo26-players-jsonp';
+    script.id = scriptId;
     script.src = url;
     script.async = true;
     script.onerror = function() {
       cleanup();
-      showError();
+      if (gender === currentGender) showError();
     };
 
     document.body.appendChild(script);
 
-    // Safety timeout in case Google responds but never calls the callback.
     setTimeout(function() {
       if (window[callbackName]) {
         cleanup();
-        showError();
+        if (gender === currentGender) showError();
       }
     }, 10000);
   }
 
-  loadPlayers();
-})();</script>
+  var tabs = document.querySelectorAll('.pl-gender-tab');
+  Array.prototype.forEach.call(tabs, function(btn) {
+    btn.addEventListener('click', function() {
+      var g = btn.getAttribute('data-gender');
+      if (g === currentGender) return;
+      Array.prototype.forEach.call(tabs, function(b) { b.classList.toggle('active', b === btn); });
+      loadPlayers(g);
+    });
+  });
+
+  loadPlayers('men');
+})();
+
+// ---- PHOTO LIGHTBOX (player photos in tables) ----
+(function() {
+  if (window.__photoLbReady) return;
+  window.__photoLbReady = true;
+
+  var lb = document.createElement('div');
+  lb.id = 'photo-lb';
+  lb.className = 'lightbox';
+  lb.innerHTML = '<button class="lightbox-close" type="button" aria-label="Затвори">&times;</button><img alt="">';
+  document.body.appendChild(lb);
+
+  var lbImg   = lb.querySelector('img');
+  var lbClose = lb.querySelector('.lightbox-close');
+
+  function open(src) { lbImg.src = src; lb.classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function close()   { lb.classList.remove('open'); lbImg.src = ''; document.body.style.overflow = ''; }
+
+  lb.addEventListener('click', function(e) { if (e.target === lb || e.target === lbClose) close(); });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && lb.classList.contains('open')) close();
+  });
+
+  document.body.addEventListener('click', function(e) {
+    var t = e.target;
+    if (!t || !t.classList || !t.classList.contains('pphoto')) return;
+    var src = t.getAttribute('src') || '';
+    if (!src) return;
+    // Upgrade Drive thumbnail size for higher-res view
+    var big = src.replace(/([?&])sz=w\d+/, '$1sz=w1600');
+    open(big);
+  });
+})();
+</script>
 <script src="config.js"></script>
 <script src="components/gallery.js"></script>
 <script src="components/sponsors.js"></script>
