@@ -115,6 +115,71 @@
   overflow: hidden;
 }
 .registration-content, .registration-facts { position: relative; z-index: 1; }
+.reg-countdown {
+  grid-column: 1 / -1;
+  position: relative;
+  z-index: 1;
+  background: rgba(0,0,0,0.20);
+  border: 1px solid rgba(184,216,52,0.30);
+  border-radius: 16px;
+  padding: 22px 24px;
+  margin-top: 8px;
+  text-align: center;
+}
+.reg-countdown-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #d4eb6e;
+  margin-bottom: 14px;
+}
+.reg-countdown-grid {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.reg-cd-unit {
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 12px;
+  padding: 12px 18px;
+  min-width: 78px;
+}
+.reg-cd-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.reg-cd-lbl {
+  margin-top: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+}
+.reg-countdown-note {
+  margin-top: 16px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.82);
+}
+.reg-countdown-note strong { color: #d4eb6e; font-weight: 700; }
+.reg-countdown.expired .reg-cd-num { color: #ff9999; }
+.reg-countdown.expired .reg-countdown-label { color: #ff9999; }
+@media (max-width: 600px) {
+  .reg-countdown { padding: 16px 14px; }
+  .reg-countdown-grid { gap: 8px; }
+  .reg-cd-unit { padding: 10px 10px; min-width: 62px; }
+  .reg-cd-num { font-size: 26px; }
+  .reg-cd-lbl { font-size: 9px; letter-spacing: 1px; }
+  .reg-countdown-note { font-size: 12px; }
+}
 .registration-badge {
   display: inline-flex;
   align-items: center;
@@ -335,6 +400,7 @@
     <div class="nav-right">
       <a href="index.html" class="nav-link">Дома</a>
       <a href="about.html" class="nav-link">За нас</a>
+      <a href="volontiraj.html" class="nav-link">Волонтирај</a>
       <a href="#prijava" class="nav-link" data-open-register-modal>Натпреварувај се</a>
       <a href="partner.html" class="nav-link">Стани партнер</a>
     </div>
@@ -347,6 +413,7 @@
     <a href="doniraj.html" class="mobile-link">Донирај</a>
     <a href="index.html" class="mobile-link">Дома</a>
     <a href="about.html" class="mobile-link">За нас</a>
+    <a href="volontiraj.html" class="mobile-link">Волонтирај</a>
     <a href="#prijava" class="mobile-link" data-open-register-modal>Натпреварувај се</a>
     <a href="partner.html" class="mobile-link">Стани партнер</a>
   </div>
@@ -413,6 +480,20 @@
           <div class="registration-fact">
             <div class="registration-fact-label">Намена</div>
             <div class="registration-fact-value">100% за хуманитарната мисија</div>
+          </div>
+        </div>
+
+        <div class="reg-countdown" id="reg-countdown">
+          <div class="reg-countdown-label">Преостанато време до затворање на пријавите</div>
+          <div class="reg-countdown-grid">
+            <div class="reg-cd-unit"><div class="reg-cd-num" id="cd-days">--</div><div class="reg-cd-lbl">Денови</div></div>
+            <div class="reg-cd-unit"><div class="reg-cd-num" id="cd-hours">--</div><div class="reg-cd-lbl">Часа</div></div>
+            <div class="reg-cd-unit"><div class="reg-cd-num" id="cd-mins">--</div><div class="reg-cd-lbl">Мин</div></div>
+            <div class="reg-cd-unit"><div class="reg-cd-num" id="cd-secs">--</div><div class="reg-cd-lbl">Сек</div></div>
+          </div>
+          <div class="reg-countdown-note">
+            Пријавите се затвораат во <strong>недела, 14 јуни 2026</strong> (UTC+02:00).<br>
+            До овој датум е потребно да биде уплатена и <strong>котизацијата</strong> од 3.000 ден.
           </div>
         </div>
       </div>
@@ -493,6 +574,25 @@
 
   </div>
 </div>
+
+<div class="section" style="background:var(--teal-deeper);padding:80px 24px">
+  <div style="max-width:1000px;margin:0 auto">
+    <div class="section-tag"><div class="section-tag-line"></div><span class="section-tag-text" style="color:var(--lime)">Промо</span></div>
+    <h2 class="playfair" style="font-size:clamp(26px,4vw,40px);color:white;margin-bottom:40px">Mavrovo Open 2026</h2>
+    <div class="video-split">
+      <div>
+        <p style="color:rgba(255,255,255,0.78);font-size:16px;line-height:1.8">Три викенди тенис, музика и дружба во срцето на Маврово. Погледни го промо видеото за второто издание на најзабавниот спортски настан за аматери — и резервирај го своето место.</p>
+        <button class="btn btn-lime" style="margin-top:24px" onclick="openRegModal()">Натпреварувај се →</button>
+      </div>
+      <div class="video-portrait-wrap">
+        <div class="video-portrait-frame">
+          <iframe src="https://drive.google.com/file/d/1rBiljZvQ0Z-v1cgh1bE4oh-PoRvmPoME/preview" allow="autoplay; fullscreen" allowfullscreen title="Mavrovo Open видео"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="cta-bar">
   <div class="cta-bar-title">Поддржи го Mavrovo Open 2026</div>
   <div class="cta-bar-sub">Стани дел од приказната — како партнер или донатор</div>
@@ -517,6 +617,7 @@
       <div class="footer-heading">Навигација</div>
       <a href="index.html" class="footer-link">Дома</a>
       <a href="about.html" class="footer-link">За нас</a>
+      <a href="volontiraj.html" class="footer-link">Волонтирај</a>
       <a href="#prijava" class="footer-link" data-open-register-modal>Натпреварувај се</a>
       <a href="partner.html" class="footer-link">Стани партнер</a>
       <a href="doniraj.html" class="footer-link">Донирај</a>
@@ -794,6 +895,46 @@ document.addEventListener('keydown', function(e) {
   });
 
   loadPlayers('men');
+})();
+
+// ---- REGISTRATION COUNTDOWN ----
+(function() {
+  // Sunday, June 14, 2026 — end of day in UTC+02:00 = 21:59:59 UTC
+  var DEADLINE = Date.UTC(2026, 5, 14, 21, 59, 59);
+
+  var box   = document.getElementById('reg-countdown');
+  var dEl   = document.getElementById('cd-days');
+  var hEl   = document.getElementById('cd-hours');
+  var mEl   = document.getElementById('cd-mins');
+  var sEl   = document.getElementById('cd-secs');
+  var label = box && box.querySelector('.reg-countdown-label');
+
+  if (!box || !dEl || !hEl || !mEl || !sEl) return;
+
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  function tick() {
+    var diff = DEADLINE - Date.now();
+    if (diff <= 0) {
+      dEl.textContent = '00'; hEl.textContent = '00'; mEl.textContent = '00'; sEl.textContent = '00';
+      box.classList.add('expired');
+      if (label) label.textContent = 'Пријавите се затворени';
+      clearInterval(timer);
+      return;
+    }
+    var totalSec = Math.floor(diff / 1000);
+    var days  = Math.floor(totalSec / 86400);
+    var hours = Math.floor((totalSec % 86400) / 3600);
+    var mins  = Math.floor((totalSec % 3600) / 60);
+    var secs  = totalSec % 60;
+    dEl.textContent = pad(days);
+    hEl.textContent = pad(hours);
+    mEl.textContent = pad(mins);
+    sEl.textContent = pad(secs);
+  }
+
+  tick();
+  var timer = setInterval(tick, 1000);
 })();
 
 // ---- PHOTO LIGHTBOX (player photos in tables) ----
