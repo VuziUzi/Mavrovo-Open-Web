@@ -44,7 +44,7 @@
       var item = document.createElement('div');
       item.className = 'sponsors-item';
       var img = document.createElement('img');
-      img.src = 'https://drive.google.com/thumbnail?id=' + f.id + '&sz=w200';
+      img.src = 'https://drive.google.com/thumbnail?id=' + f.id + '&sz=w400';
       img.alt = f.name.replace(/\.[^.]+$/, '');
       img.loading = 'lazy';
       item.appendChild(img);
