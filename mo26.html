@@ -334,6 +334,123 @@
 .ph-title { font-family: 'Playfair Display', serif; font-size: 22px; color: #0a4545; margin-bottom: 12px; }
 .ph-text { font-size: 15px; color: #888; max-width: 440px; margin: 0 auto; line-height: 1.65; }
 
+/* ---- Правила на игра ---- */
+.rl-lead {
+  background: linear-gradient(135deg, #0a4545 0%, #126f6f 58%, #1a8a6e 100%);
+  border-radius: 18px;
+  padding: 32px 34px;
+  box-shadow: 0 18px 42px rgba(10,69,69,0.16);
+}
+.rl-lead h3 { font-family: 'Playfair Display', serif; font-size: 24px; color: #fff; margin: 0 0 12px; }
+.rl-lead p { margin: 0; font-size: 15.5px; line-height: 1.75; color: rgba(255,255,255,0.82); }
+.rl-lead p + p { margin-top: 12px; }
+
+.rl-sec { margin-top: 46px; }
+.rl-sec-head { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.rl-sec-num {
+  width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0;
+  background: rgba(184,216,52,0.28); color: #0a4545;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800;
+}
+.rl-sec-head h3 { font-family: 'Playfair Display', serif; font-size: 21px; color: #0a4545; margin: 0; }
+.rl-sec-sub { font-size: 14px; color: #888; line-height: 1.65; margin: 0 0 18px 42px; }
+
+.rl-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+.rl-card {
+  background: #fff; border: 1px solid #ececec; border-left: 4px solid #b8d834;
+  border-radius: 14px; padding: 20px; box-shadow: 0 6px 18px rgba(10,69,69,0.05);
+}
+.rl-card-ico { font-size: 22px; margin-bottom: 10px; }
+.rl-card h4 { font-size: 15px; color: #0a4545; margin: 0 0 6px; font-weight: 700; }
+.rl-card p { font-size: 13.5px; color: #666; line-height: 1.6; margin: 0; }
+
+.rl-split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.rl-split-card { background: #f7f5f0; border: 1px solid #e8e6e1; border-radius: 14px; padding: 22px 22px 24px; }
+.rl-split-card.is-hi { background: rgba(184,216,52,0.14); border-color: rgba(184,216,52,0.45); }
+.rl-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 14px; }
+.rl-chip {
+  background: #0a4545; color: #fff; font-size: 12px; font-weight: 700;
+  padding: 5px 13px; border-radius: 999px; letter-spacing: 0.3px;
+}
+.rl-split-card h4 { font-family: 'Playfair Display', serif; font-size: 18px; color: #0a4545; margin: 0 0 8px; }
+.rl-split-card p { font-size: 14px; color: #555; line-height: 1.65; margin: 0; }
+
+.rl-weeks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.rl-week {
+  background: #fff; border: 1px solid #ececec; border-radius: 16px;
+  padding: 22px 20px; text-align: center; box-shadow: 0 6px 18px rgba(10,69,69,0.05);
+}
+.rl-week-tag { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 800; color: #1a7a7a; }
+.rl-week-date { font-family: 'Playfair Display', serif; font-size: 19px; color: #0a4545; margin: 8px 0 4px; }
+.rl-week-days { font-size: 12.5px; color: #999; margin-bottom: 14px; }
+.rl-week-out {
+  font-size: 13px; color: #4a5555; line-height: 1.55;
+  border-top: 1px dashed #e0ded9; padding-top: 13px;
+}
+.rl-week.is-final { background: linear-gradient(135deg, #0a4545 0%, #126f6f 100%); border-color: transparent; }
+.rl-week.is-final .rl-week-tag { color: #b8d834; }
+.rl-week.is-final .rl-week-date { color: #fff; }
+.rl-week.is-final .rl-week-days { color: rgba(255,255,255,0.55); }
+.rl-week.is-final .rl-week-out { color: rgba(255,255,255,0.8); border-top-color: rgba(255,255,255,0.2); }
+
+.rl-subhead {
+  font-family: 'Playfair Display', serif; font-size: 17px; color: #0a4545;
+  margin: 34px 0 14px; padding-left: 42px;
+}
+.rl-days { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.rl-days.is-two { grid-template-columns: repeat(2, 1fr); }
+.rl-day {
+  background: #fff; border: 1px solid #ececec; border-radius: 16px;
+  overflow: hidden; box-shadow: 0 6px 18px rgba(10,69,69,0.05);
+  display: flex; flex-direction: column;
+}
+.rl-day-head { background: #0a4545; padding: 15px 18px; }
+.rl-day-num { display: block; color: #b8d834; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 800; }
+.rl-day-t { color: #fff; font-family: 'Playfair Display', serif; font-size: 17px; margin-top: 4px; }
+.rl-day-body { padding: 18px; display: grid; gap: 16px; }
+.rl-cat {
+  display: inline-block; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase;
+  font-weight: 800; padding: 4px 10px; border-radius: 6px; margin-bottom: 7px;
+}
+.rl-cat-m { background: rgba(26,122,122,0.12); color: #0f5e5e; }
+.rl-cat-w { background: rgba(184,216,52,0.3); color: #4d5c10; }
+.rl-cat-d { background: rgba(10,69,69,0.1); color: #0a4545; }
+
+.rl-dbl {
+  margin-top: 16px;
+  background: #f7f5f0; border: 1px solid #e8e6e1; border-left: 4px solid #1a7a7a;
+  border-radius: 14px; padding: 20px 22px;
+}
+.rl-dbl h4 { font-family: 'Playfair Display', serif; font-size: 17px; color: #0a4545; margin: 9px 0 10px; }
+.rl-dbl ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.rl-dbl li { position: relative; padding-left: 20px; font-size: 14px; color: #4a5555; line-height: 1.6; }
+.rl-dbl li::before { content: '•'; position: absolute; left: 5px; top: -1px; color: #1a7a7a; font-weight: 800; }
+.rl-dbl li strong { color: #0a4545; }
+.rl-line-txt { font-size: 14.5px; color: #1a1a1a; font-weight: 700; line-height: 1.45; }
+.rl-line-note { font-size: 12.5px; color: #888; line-height: 1.55; margin-top: 4px; }
+
+.rl-note {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: rgba(26,122,122,0.06); border-left: 3px solid #1a7a7a;
+  border-radius: 10px; padding: 15px 17px; margin-top: 16px;
+  font-size: 13.5px; color: #4a5555; line-height: 1.65;
+}
+.rl-note span:first-child { flex-shrink: 0; font-size: 16px; line-height: 1.3; }
+
+@media (max-width: 820px) {
+  .rl-split, .rl-weeks, .rl-days, .rl-days.is-two { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .rl-lead { padding: 24px 20px; }
+  .rl-lead h3 { font-size: 20px; }
+  .rl-lead p { font-size: 14.5px; }
+  .rl-sec { margin-top: 36px; }
+  .rl-sec-head h3 { font-size: 19px; }
+  .rl-sec-sub { margin-left: 0; }
+  .rl-subhead { padding-left: 0; margin-top: 30px; }
+}
+
 /* CTA bar */
 .cta-bar { background: #f7f5f0; padding: 60px 24px; text-align: center; border-top: 1px solid #e8e6e1; }
 .cta-bar-title { font-family: 'Playfair Display', serif; font-size: 22px; color: #0a4545; margin-bottom: 10px; }
@@ -445,7 +562,10 @@
   <div style="max-width:900px; margin:0 auto;">
     <div class="tabs">
       <button class="tab-btn active" id="tbtn-prijava" onclick="showTab('prijava')">Пријава</button>
-      <button class="tab-btn" id="tbtn-zdrepka" onclick="showTab('zdrepka')">Ждрепка</button>
+      <button class="tab-btn" id="tbtn-pravila" onclick="showTab('pravila')">Правила на игра</button>
+      <button class="tab-btn" id="tbtn-zdrepka-mazi" onclick="showTab('zdrepka-mazi')">Ждрепка Мажи</button>
+      <button class="tab-btn" id="tbtn-zdrepka-zeni" onclick="showTab('zdrepka-zeni')">Ждрепка Жени</button>
+      <button class="tab-btn" id="tbtn-zdrepka-dvojki" onclick="showTab('zdrepka-dvojki')">Ждрепка Двојки Про</button>
       <button class="tab-btn" id="tbtn-raspored" onclick="showTab('raspored')">Распоред на натпревари</button>
       <button class="tab-btn" id="tbtn-galerija" onclick="showTab('galerija')">Галерија</button>
     </div>
@@ -543,19 +663,254 @@
       </div>
     </div>
 
-    <!-- TAB 2: ЖДРЕПКА -->
-    <div class="tab-pane" id="pane-zdrepka">
-      <div class="ph-block">
-        <div class="ph-icon">🎲</div>
-        <div class="ph-title">Ждрепка</div>
-        <div class="ph-text">
-          Ждрепката за распределба на натпреварувачите ќе биде објавена по завршувањето на пријавите.
-          Следете нè на <a href="https://www.instagram.com/mavrovo.open/" target="_blank" style="color:#1a7a7a;font-weight:600;">@mavrovo.open</a> за ажурирања.
+    <!-- TAB 2: ПРАВИЛА НА ИГРА -->
+    <div class="tab-pane" id="pane-pravila">
+      <div class="rl-lead">
+        <h3>Правила на игра</h3>
+        <p>Mavrovo Open се игра по систем на директна елиминација низ три викенди. Ждрепката е поделена на две половини — едната се игра првиот викенд, другата вториот — а последниот викенд е резервиран за полуфиналињата и финалињата.</p>
+        <p>Подолу е сè што треба да знаеш пред да излезеш на терен: форматот на мечот, броењето поени и што се игра во кој ден.</p>
+      </div>
+
+      <!-- 1. Формат на мечот -->
+      <div class="rl-sec">
+        <div class="rl-sec-head">
+          <div class="rl-sec-num">1</div>
+          <h3>Формат на мечот</h3>
+        </div>
+        <p class="rl-sec-sub">Форматот подолу важи за машка и за женска конкуренција. <strong>Двојки Про</strong> има свој формат — опишан во точка 4.</p>
+        <div class="rl-cards">
+          <div class="rl-card">
+            <div class="rl-card-ico">🎾</div>
+            <h4>Два добиени сета</h4>
+            <p>Мечот се игра на два добиени сета. Секој сет се игра до 6 освоени гема.</p>
+          </div>
+          <div class="rl-card">
+            <div class="rl-card-ico">⚖️</div>
+            <h4>Тај-брејк при 6:6</h4>
+            <p>Ако сетот стигне до резултат 6:6, се игра тај-брејк кој го одлучува сетот.</p>
+          </div>
+          <div class="rl-card">
+            <div class="rl-card-ico">🔟</div>
+            <h4>Супер тај-брејк <span style="color:#1a7a7a">(до 1/4 финале)</span></h4>
+            <p>Во сите фази заклучно со четвртфиналето, при резултат 1:1 во сетови наместо трет сет се игра супер тај-брејк до 10 поени.</p>
+          </div>
+          <div class="rl-card">
+            <div class="rl-card-ico">🏁</div>
+            <h4>Полн трет сет <span style="color:#1a7a7a">(полуфинале и финале)</span></h4>
+            <p>Во полуфиналињата и финалињата се игра <strong>регуларен трет сет до 6 гема</strong>, со тај-брејк при 6:6. Без супер тај-брејк.</p>
+          </div>
+          <div class="rl-card">
+            <div class="rl-card-ico">⚔️</div>
+            <h4>Директна елиминација</h4>
+            <p>Нема групна фаза — поразениот го завршува своето учество во турнирот.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Броење при 40:40 -->
+      <div class="rl-sec">
+        <div class="rl-sec-head">
+          <div class="rl-sec-num">2</div>
+          <h3>Броење при резултат 40:40</h3>
+        </div>
+        <p class="rl-sec-sub">Единствената разлика меѓу фазите е како се решава изедначениот гем.</p>
+        <div class="rl-split">
+          <div class="rl-split-card">
+            <div class="rl-chips">
+              <span class="rl-chip">1/32 финале</span>
+              <span class="rl-chip">1/16 финале</span>
+              <span class="rl-chip">Двојки Про · сите фази</span>
+            </div>
+            <h4>Одлучувачки поен</h4>
+            <p>При 40:40 не се игра предност. Се игра <strong>еден одлучувачки поен</strong> кој директно го решава гемот. Ова го држи темпото на турнирот во деновите со најмногу мечеви.</p>
+          </div>
+          <div class="rl-split-card is-hi">
+            <div class="rl-chips">
+              <span class="rl-chip">1/8 финале</span>
+              <span class="rl-chip">1/4 финале</span>
+              <span class="rl-chip">Полуфинале</span>
+              <span class="rl-chip">Финале</span>
+            </div>
+            <h4>Класично броење</h4>
+            <p>При 40:40 се игра <strong>регуларно, со предност</strong> — гемот трае сè додека еден играч не освои два поени по ред.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Структура низ викендите -->
+      <div class="rl-sec">
+        <div class="rl-sec-head">
+          <div class="rl-sec-num">3</div>
+          <h3>Како е поделен турнирот</h3>
+        </div>
+        <p class="rl-sec-sub">Половина од ждрепката се игра првиот викенд, другата половина вториот. Секој од тие два викенда дава по <strong>двајца полуфиналисти кај мажите и двајца кај жените</strong>, кои се среќаваат на последниот викенд.</p>
+        <div class="rl-weeks">
+          <div class="rl-week">
+            <div class="rl-week-tag">Прв викенд</div>
+            <div class="rl-week-date">28 – 30 август</div>
+            <div class="rl-week-days">Петок · Сабота · Недела</div>
+            <div class="rl-week-out">Се игра <strong>првата половина</strong> од ждрепката.<br>Резултат: 2 полуфиналисти (М) + 2 полуфиналистки (Ж)</div>
+          </div>
+          <div class="rl-week">
+            <div class="rl-week-tag">Втор викенд</div>
+            <div class="rl-week-date">5, 6 и 8 септември</div>
+            <div class="rl-week-days">Сабота · Недела · Вторник</div>
+            <div class="rl-week-out">Се игра <strong>втората половина</strong> од ждрепката.<br>Резултат: 2 полуфиналисти (М) + 2 полуфиналистки (Ж)</div>
+          </div>
+          <div class="rl-week is-final">
+            <div class="rl-week-tag">Финален викенд</div>
+            <div class="rl-week-date">12 – 13 септември</div>
+            <div class="rl-week-days">Сабота · Недела · <strong>2 дена</strong></div>
+            <div class="rl-week-out">Полуфинала, мечеви за <strong>трето место</strong> и <strong>финале</strong>.<br>Тука се игра и целиот турнир во <strong>Двојки Про</strong>.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Распоред по денови -->
+      <div class="rl-sec">
+        <div class="rl-sec-head">
+          <div class="rl-sec-num">4</div>
+          <h3>Што се игра во кој ден</h3>
+        </div>
+        <p class="rl-sec-sub">Ист распоред важи и за првиот и за вториот викенд — само со различната половина од ждрепката.</p>
+        <div class="rl-days">
+          <div class="rl-day">
+            <div class="rl-day-head">
+              <span class="rl-day-num">Ден 1</span>
+              <div class="rl-day-t">Старт на викендот</div>
+            </div>
+            <div class="rl-day-body">
+              <div>
+                <span class="rl-cat rl-cat-m">Мажи</span>
+                <div class="rl-line-txt">1/32 финале</div>
+              </div>
+              <div>
+                <span class="rl-cat rl-cat-w">Жени</span>
+                <div class="rl-line-txt">1/8 финале</div>
+                <div class="rl-line-note">Прва половина од мечевите.</div>
+              </div>
+            </div>
+          </div>
+          <div class="rl-day">
+            <div class="rl-day-head">
+              <span class="rl-day-num">Ден 2</span>
+              <div class="rl-day-t">Втор ден</div>
+            </div>
+            <div class="rl-day-body">
+              <div>
+                <span class="rl-cat rl-cat-m">Мажи</span>
+                <div class="rl-line-txt">1/16 финале</div>
+              </div>
+              <div>
+                <span class="rl-cat rl-cat-w">Жени</span>
+                <div class="rl-line-txt">1/8 финале</div>
+                <div class="rl-line-note">Втора половина од мечевите.</div>
+              </div>
+            </div>
+          </div>
+          <div class="rl-day">
+            <div class="rl-day-head">
+              <span class="rl-day-num">Ден 3</span>
+              <div class="rl-day-t">Одлучувачки ден</div>
+            </div>
+            <div class="rl-day-body">
+              <div>
+                <span class="rl-cat rl-cat-m">Мажи</span>
+                <div class="rl-line-txt">1/8 и 1/4 финале</div>
+                <div class="rl-line-note">Победниците од 1/8 играат втор меч истиот ден.</div>
+              </div>
+              <div>
+                <span class="rl-cat rl-cat-w">Жени</span>
+                <div class="rl-line-txt">1/4 финале</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="rl-note">
+          <span>⏱️</span>
+          <span>Во третиот ден од викендот, машката конкуренција игра <strong>два меча во ист ден</strong> — 1/8 и 1/4 финале. Помеѓу двата натпревара е предвидена солидна пауза за одмор и опоравување.</span>
+        </div>
+
+        <div class="rl-subhead">Финален викенд · 12 – 13 септември</div>
+        <div class="rl-days is-two">
+          <div class="rl-day">
+            <div class="rl-day-head">
+              <span class="rl-day-num">Ден 1 · Сабота</span>
+              <div class="rl-day-t">Полуфинала</div>
+            </div>
+            <div class="rl-day-body">
+              <div>
+                <span class="rl-cat rl-cat-m">Мажи</span>
+                <div class="rl-line-txt">Полуфинале</div>
+              </div>
+              <div>
+                <span class="rl-cat rl-cat-w">Жени</span>
+                <div class="rl-line-txt">Полуфинале</div>
+              </div>
+              <div>
+                <span class="rl-cat rl-cat-d">Двојки Про</span>
+                <div class="rl-line-txt">1/4 финале</div>
+              </div>
+            </div>
+          </div>
+          <div class="rl-day">
+            <div class="rl-day-head">
+              <span class="rl-day-num">Ден 2 · Недела</span>
+              <div class="rl-day-t">Финала</div>
+            </div>
+            <div class="rl-day-body">
+              <div>
+                <span class="rl-cat rl-cat-m">Мажи</span>
+                <div class="rl-line-txt">Финале и меч за трето место</div>
+              </div>
+              <div>
+                <span class="rl-cat rl-cat-w">Жени</span>
+                <div class="rl-line-txt">Финале и меч за трето место</div>
+              </div>
+              <div>
+                <span class="rl-cat rl-cat-d">Двојки Про</span>
+                <div class="rl-line-txt">Полуфинале и финале</div>
+                <div class="rl-line-note">Без меч за трето место.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rl-dbl">
+          <span class="rl-cat rl-cat-d">Двојки Про</span>
+          <h4>Формат на Двојки Про</h4>
+          <ul>
+            <li>Целиот турнир во двојки се игра <strong>само на финалниот викенд</strong> (12 – 13 септември).</li>
+            <li><strong>Сабота:</strong> 1/4 финале. <strong>Недела:</strong> полуфинале и финале — без меч за трето место.</li>
+            <li>Мечот се игра на <strong>два добиени сета до 6 гема</strong>, со тај-брејк при 6:6.</li>
+            <li>При резултат 1:1 во сетови се игра <strong>супер тај-брејк до 10 поени</strong> — во сите фази, вклучително и финалето.</li>
+            <li>При <strong>40:40</strong> се игра <strong>еден одлучувачки поен</strong> — во сите фази.</li>
+          </ul>
+        </div>
+
+        <div class="rl-note">
+          <span>🏆</span>
+          <span>На крајот од секој од првите два викенда се знаат по <strong>двајца полуфиналисти во машка и двајца во женска конкуренција</strong>. Тие се среќаваат на финалниот викенд, кој трае два дена — во сабота полуфиналињата, во недела финалињата и мечевите за трето место.</span>
         </div>
       </div>
     </div>
 
-    <!-- TAB 3: РАСПОРЕД -->
+    <!-- TAB 3: ЖДРЕПКА МАЖИ -->
+    <div class="tab-pane" id="pane-zdrepka-mazi">
+      <div id="draw-mazi"></div>
+    </div>
+
+    <!-- TAB 4: ЖДРЕПКА ЖЕНИ -->
+    <div class="tab-pane" id="pane-zdrepka-zeni">
+      <div id="draw-zeni"></div>
+    </div>
+
+    <!-- TAB 5: ЖДРЕПКА ДВОЈКИ ПРО -->
+    <div class="tab-pane" id="pane-zdrepka-dvojki">
+      <div id="draw-dvojki"></div>
+    </div>
+
+    <!-- TAB 6: РАСПОРЕД -->
     <div class="tab-pane" id="pane-raspored">
       <div class="ph-block">
         <div class="ph-icon">📅</div>
@@ -567,7 +922,7 @@
       </div>
     </div>
 
-    <!-- TAB 4: ГАЛЕРИЈА -->
+    <!-- TAB 7: ГАЛЕРИЈА -->
     <div class="tab-pane" id="pane-galerija">
       <div id="drive-gallery-mo26" style="min-height:400px;padding-top:32px"></div>
     </div>
@@ -644,6 +999,7 @@
 </div>
 
 <script src="script.js"></script>
+<script src="components/donate-banner.js"></script>
 <script>
 // ---- TAB SWITCHING ----
 function showTab(name) {
@@ -655,6 +1011,8 @@ function showTab(name) {
   var pane = document.getElementById('pane-' + name);
   if (btn) btn.classList.add('active');
   if (pane) pane.classList.add('active');
+  // Connector lines can only be measured once the pane is visible
+  if (window.mo26Draws && window.mo26Draws[name]) window.mo26Draws[name].refresh();
 }
 
 // ---- MODAL ----
@@ -973,9 +1331,44 @@ document.addEventListener('keydown', function(e) {
 <script src="config.js"></script>
 <script src="components/gallery.js"></script>
 <script src="components/sponsors.js"></script>
+<script src="components/draw.js"></script>
 <script>
 new DriveGallery({ containerId: 'drive-gallery-mo26', folderId: '1Z54KINKPIZ7tSOXCUtkRKw3lg2E0aXeo' });
 new DriveSponsors({ containerId: 'sponsors-mo26', folderId: '18PavSAhGxlKO4yE53KAYaSkspn6VpfAM' });
+
+// ---- TOURNAMENT DRAWS (MO26) ----
+var DRAW_EMPTY_HTML = 'Ждрепката за распределба на натпреварувачите ќе биде објавена по завршувањето на пријавите. '
+  + 'Следете нè на <a href="https://www.instagram.com/mavrovo.open/" target="_blank" style="color:#1a7a7a;font-weight:600;">@mavrovo.open</a> за ажурирања.';
+
+window.mo26Draws = {
+  'zdrepka-mazi': new DrawBracket({
+    containerId: 'draw-mazi',
+    sheetName: 'Draw26 Men',
+    title: 'Ждрепка Мажи',
+    subtitle: 'Турнирска ждрепка и резултати од натпреварите',
+    emptyTitle: 'Ждрепка Мажи',
+    emptyIcon: '&#127922;',
+    emptyHtml: DRAW_EMPTY_HTML
+  }),
+  'zdrepka-zeni': new DrawBracket({
+    containerId: 'draw-zeni',
+    sheetName: 'Draw26 Women',
+    title: 'Ждрепка Жени',
+    subtitle: 'Турнирска ждрепка и резултати од натпреварите',
+    emptyTitle: 'Ждрепка Жени',
+    emptyIcon: '&#127922;',
+    emptyHtml: DRAW_EMPTY_HTML
+  }),
+  'zdrepka-dvojki': new DrawBracket({
+    containerId: 'draw-dvojki',
+    sheetName: 'Draw26 Doubles Pro',
+    title: 'Ждрепка Двојки Про',
+    subtitle: 'Турнирска ждрепка и резултати од натпреварите',
+    emptyTitle: 'Ждрепка Двојки Про',
+    emptyIcon: '&#127922;',
+    emptyHtml: DRAW_EMPTY_HTML
+  })
+};
 </script>
 </body>
 </html>
