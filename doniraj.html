@@ -50,8 +50,8 @@
     <div class="nav-right"><a href="index.html" class="nav-link">Дома</a>
 <a href="about.html" class="nav-link">За нас</a>
 <a href="volontiraj.html" class="nav-link">Волонтирај</a>
-<a href="mo26.html#prijava" class="nav-link">Натпреварувај се</a>
 <a href="partner.html" class="nav-link">Стани партнер</a>
+<a class="nav-link nav-link-live is-disabled" data-live-link aria-label="Гледај во Живо" aria-disabled="true" title="Преносот во живо сè уште не е достапен"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m23 7-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg><span class="live-dot"></span><span class="live-label">Гледај во Живо</span></a>
 </div>
     <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
   </div>
@@ -62,18 +62,18 @@
 <a href="index.html" class="mobile-link">Дома</a>
 <a href="about.html" class="mobile-link">За нас</a>
 <a href="volontiraj.html" class="mobile-link">Волонтирај</a>
-<a href="mo26.html#prijava" class="mobile-link">Натпреварувај се</a>
 <a href="partner.html" class="mobile-link">Стани партнер</a>
+<a class="mobile-link nav-link-live is-disabled" data-live-link aria-label="Гледај во Живо" aria-disabled="true" title="Преносот во живо сè уште не е достапен"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m23 7-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg><span class="live-dot"></span><span class="live-label">Гледај во Живо</span></a>
 </div>
 </nav>
-<div class="page-hero page-hero-teal">
+<div class="page-hero page-hero-teal" id="doniraj">
   <div class="hero-badge">Донирај</div>
   <h1 class="playfair" style="color:white;font-size:clamp(30px,5vw,48px);margin-bottom:14px">Донирај</h1>
   <p style="color:rgba(255,255,255,0.72);font-size:16px;max-width:560px;margin:0 auto">Спортот нè собира, но целта нè движи — подобри услови за децата од Маврово.</p>
 </div>
 
 <!-- Campaign card -->
-<div class="dn-wrap">
+<div class="dn-wrap" id="kampanja">
   <div class="dn-card">
     <div class="dn-card-head">
       <div class="dn-tags">
@@ -175,7 +175,7 @@
 </div>
 
 <!-- Impact -->
-<div class="dn-wrap">
+<div class="dn-wrap" id="vlijanie">
   <div class="dn-section-head">
     <div class="section-tag"><div class="section-tag-line"></div><span class="section-tag-text">Влијание</span></div>
     <h2>Што значи твојата поддршка</h2>
@@ -209,7 +209,7 @@
   </div>
 </div>
 
-<div class="dn-wrap" style="margin-top:44px;margin-bottom:70px">
+<div class="dn-wrap" id="pridonesi" style="margin-top:44px;margin-bottom:70px">
   <div style="background:linear-gradient(135deg,#0a4545 0%,#126f6f 100%);border-radius:18px;padding:34px 30px;text-align:center">
     <p style="color:rgba(255,255,255,0.78);font-size:15.5px;line-height:1.75;max-width:560px;margin:0 auto 10px">
       Не мора да бидете дел од турнирот за да бидете дел од иницијативата.
@@ -261,6 +261,8 @@
   <button class="lightbox-nav lightbox-next" onclick="event.stopPropagation();nextImg()">&#8250;</button>
 </div>
 <script src="script.js"></script>
+<script src="components/live-button.js"></script>
 <script src="components/donate-banner.js"></script>
+<script src="components/tab-router.js"></script>
 </body>
 </html>

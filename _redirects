@@ -1,2 +1,4 @@
 /contact /contact.html 200
 /2026.html /mo26.html 301
+# Same-origin proxy for the Tennis Math live score JSON (their API sends no CORS headers)
+/livescore/* https://tableau.tennis-math.com/score/:splat 200

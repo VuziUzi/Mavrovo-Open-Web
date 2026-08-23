@@ -73,8 +73,8 @@
     <div class="nav-right"><a href="index.html" class="nav-link">Дома</a>
 <a href="about.html" class="nav-link">За нас</a>
 <a href="volontiraj.html" class="nav-link">Волонтирај</a>
-<a href="mo26.html#prijava" class="nav-link">Натпреварувај се</a>
 <a href="partner.html" class="nav-link">Стани партнер</a>
+<a class="nav-link nav-link-live is-disabled" data-live-link aria-label="Гледај во Живо" aria-disabled="true" title="Преносот во живо сè уште не е достапен"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m23 7-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg><span class="live-dot"></span><span class="live-label">Гледај во Живо</span></a>
 </div>
     <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
   </div>
@@ -85,15 +85,15 @@
 <a href="index.html" class="mobile-link">Дома</a>
 <a href="about.html" class="mobile-link">За нас</a>
 <a href="volontiraj.html" class="mobile-link">Волонтирај</a>
-<a href="mo26.html#prijava" class="mobile-link">Натпреварувај се</a>
 <a href="partner.html" class="mobile-link">Стани партнер</a>
+<a class="mobile-link nav-link-live is-disabled" data-live-link aria-label="Гледај во Живо" aria-disabled="true" title="Преносот во живо сè уште не е достапен"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m23 7-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg><span class="live-dot"></span><span class="live-label">Гледај во Живо</span></a>
 </div>
 </nav>
-<div class="page-hero page-hero-teal">
+<div class="page-hero page-hero-teal" id="rang-lista">
   <div class="hero-badge">Ранг листа</div>
   <h1 class="playfair" style="color:white;font-size:clamp(30px,5vw,48px);margin-bottom:14px">Ранг листа</h1>
 </div>
-<div class="rank-section">
+<div class="rank-section" id="lista">
   <div class="rank-wrap">
     <div class="players-list-panel">
       <div class="players-list-header">
@@ -175,7 +175,9 @@
   <button class="lightbox-nav lightbox-next" onclick="event.stopPropagation();nextImg()">&#8250;</button>
 </div>
 <script src="script.js"></script>
+<script src="components/live-button.js"></script>
 <script src="components/donate-banner.js"></script>
+<script src="components/tab-router.js"></script>
 <script>
 (function() {
   var SHEET_ID = '1fykfBEQdx_th9MOd4zlGfAuTl5IWizt-Ln-BBDhhosM';
@@ -316,16 +318,39 @@
   }
 
   var tabs = document.querySelectorAll('.rl-tab');
+
+  function selectGender(gender, force) {
+    if (!SHEETS[gender]) gender = 'men';
+    Array.prototype.forEach.call(tabs, function(b) {
+      b.classList.toggle('active', b.getAttribute('data-gender') === gender);
+    });
+    if (!force && gender === currentGender) return;
+    load(gender);
+    if (window.TabRouter) window.TabRouter.syncHash(gender);
+  }
+
   Array.prototype.forEach.call(tabs, function(btn) {
     btn.addEventListener('click', function() {
-      var g = btn.getAttribute('data-gender');
-      if (g === currentGender) return;
-      Array.prototype.forEach.call(tabs, function(b) { b.classList.toggle('active', b === btn); });
-      load(g);
+      selectGender(btn.getAttribute('data-gender'));
     });
   });
 
-  load('men');
+  // ---- DEEP LINKS ----
+  // ranklista.html#zeni opens the women's list, #mazi the men's.
+  var startGender = 'men';
+  if (window.TabRouter) {
+    window.TabRouter.init({
+      anchor: '.rl-tabs',
+      activate: selectGender,
+      tabs: [
+        { hash: 'mazi', name: 'men',   alt: ['men', 'rang-lista-mazi'] },
+        { hash: 'zeni', name: 'women', alt: ['women', 'rang-lista-zeni'] }
+      ]
+    });
+    startGender = window.TabRouter.hashName('men');
+  }
+
+  selectGender(startGender, true);
 })();
 
 // ---- PHOTO LIGHTBOX (player photos in tables) ----
