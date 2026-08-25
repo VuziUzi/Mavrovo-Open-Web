@@ -1,15 +1,21 @@
 /**
- * "Гледај во Живо" — the nav button that points at whatever stream is running.
+ * "Гледај во Живо" — the stream link, read once and applied to every button.
  *
  * The destination lives in cell A1 of the "Live" sheet tab, so the organisers can
- * swap or retire the stream without a deploy. While A1 is empty the button stays
- * in the menu but disabled; as soon as a link appears there every button on the
- * page turns into a real link that opens in a new tab.
+ * swap or retire the stream without a deploy. While A1 is empty every button stays
+ * in place but disabled; as soon as a link appears there they all wake up.
  *
- * Markup a page provides (desktop nav and mobile menu alike):
+ * Two kinds of button share that state:
  *
- *   <a class="nav-link nav-link-live is-disabled" data-live-link
- *      aria-disabled="true">…</a>
+ *   [data-live-link]  the nav / mobile-menu entries — they scroll down to the
+ *                     #stream banner rather than leaving the page. If the banner
+ *                     is not on the page (its artwork failed to load), they fall
+ *                     back to opening the stream directly.
+ *   [data-live-cta]   the button on the #stream banner itself — opens the stream
+ *                     in a new tab.
+ *
+ * components/stream-banner.js injects its CTA after this script has run, so it
+ * calls MavrovoLive.apply() to have the current state applied to it.
  */
 (function (window, document) {
   'use strict';
@@ -18,26 +24,50 @@
   var GID = '1438092409';
   var TIMEOUT = 10000;
 
-  function buttons() {
-    return document.querySelectorAll('[data-live-link]');
-  }
+  var streamUrl = '';
 
-  function enable(url) {
-    Array.prototype.forEach.call(buttons(), function (el) {
-      el.href = url;
+  function navButtons() { return document.querySelectorAll('[data-live-link]'); }
+  function ctaButtons() { return document.querySelectorAll('[data-live-cta]'); }
+
+  function enable(el, href, newTab) {
+    el.href = href;
+    if (newTab) {
       el.target = '_blank';
       el.rel = 'noopener noreferrer';
-      el.classList.remove('is-disabled');
-      el.removeAttribute('aria-disabled');
-      el.title = 'Гледај го преносот во живо';
+    } else {
+      el.removeAttribute('target');
+      el.removeAttribute('rel');
+    }
+    el.classList.remove('is-disabled');
+    el.removeAttribute('aria-disabled');
+    el.title = newTab ? 'Гледај го преносот во живо' : 'Оди до преносот во живо';
+  }
+
+  /** Applies the known stream state to every button currently in the page. */
+  function apply() {
+    if (!streamUrl) return;
+
+    Array.prototype.forEach.call(navButtons(), function (el) {
+      enable(el, '#stream', false);
+      if (el.dataset.liveWired) return;
+      el.dataset.liveWired = '1';
+      // Without the banner on the page there is nothing to scroll to.
+      el.addEventListener('click', function (e) {
+        if (document.getElementById('stream')) return;
+        e.preventDefault();
+        window.open(streamUrl, '_blank', 'noopener');
+      });
+    });
+
+    Array.prototype.forEach.call(ctaButtons(), function (el) {
+      enable(el, streamUrl, true);
     });
   }
 
   /** A1 holds the stream link; anything that is not a URL counts as "no stream". */
   function readA1(data) {
     try {
-      var row = data.table.rows[0];
-      var v = row.c[0].v;
+      var v = data.table.rows[0].c[0].v;
       return /^https?:\/\//i.test(String(v).trim()) ? String(v).trim() : '';
     } catch (e) {
       return '';
@@ -46,7 +76,7 @@
 
   /** nav.html can be injected after load, so wait for the buttons to appear. */
   function load(attempt) {
-    if (!buttons().length) {
+    if (!navButtons().length) {
       if ((attempt || 0) < 10) setTimeout(function () { load((attempt || 0) + 1); }, 200);
       return;
     }
@@ -68,14 +98,15 @@
     window[uid] = function (data) {
       settled = true;
       cleanup();
-      var url = readA1(data);
-      if (url) enable(url);
+      streamUrl = readA1(data);
+      apply();
     };
 
+    // No 'select A' here: on an empty sheet that column does not exist yet and the
+    // query comes back as an error instead of an empty table.
     var url = 'https://docs.google.com/spreadsheets/d/' + encodeURIComponent(SHEET_ID)
       + '/gviz/tq?gid=' + encodeURIComponent(GID)
       + '&headers=0'
-      + '&tq=' + encodeURIComponent('select A limit 1')
       + '&tqx=' + encodeURIComponent('out:json;responseHandler:' + uid)
       + '&cacheBust=' + Date.now();
 
@@ -83,15 +114,20 @@
     script.id = scriptId;
     script.src = url;
     script.async = true;
-    // On any failure the button simply stays disabled.
+    // On any failure the buttons simply stay disabled.
     script.onerror = function () { if (!settled) { settled = true; cleanup(); } };
     document.body.appendChild(script);
 
     setTimeout(function () { if (!settled) { settled = true; cleanup(); } }, TIMEOUT);
   }
 
+  window.MavrovoLive = {
+    apply: apply,
+    url: function () { return streamUrl; }
+  };
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', load);
+    document.addEventListener('DOMContentLoaded', function () { load(); });
   } else {
     load();
   }

@@ -595,6 +595,88 @@ a { text-decoration: none; color: inherit; }
 }
 
 /* ===== Slim donation banner (components/donate-banner.js) ===== */
+/* ---- Telekom stream banner (components/stream-banner.js) ---- */
+.stream-banner {
+  /* Sampled from the artwork's own edge, so the band extends it seamlessly */
+  --tk-magenta: #d1036b;
+  /* The artwork keeps a white margin above and below its magenta band — the
+     phone deliberately breaks out into the top one — so the sides continue the
+     artwork's own horizontal banding rather than a single flat colour. */
+  background: linear-gradient(
+    to bottom,
+    #f6f6f6 0 9.655%,
+    var(--tk-magenta) 9.655% 90.345%,
+    #f6f6f6 90.345% 100%
+  );
+}
+/* The wide artwork is capped so its copy reads at the same size as the page's
+   body text; the magenta band carries on to both edges of the screen. */
+.stream-banner-inner { position: relative; max-width: 1280px; margin: 0 auto; }
+.stream-banner-art { display: block; }
+.stream-banner-art img { display: block; width: 100%; height: auto; }
+
+/* Button sits on the artwork, lined up with the left edge of its copy:
+   wide art 2170x725, copy from x 25.6%, last line ends at y 66.1%;
+   tall art 934x1684, copy from x 17.1%, last line ends at y 86.3% and the
+   Telekom "T" sits to the right of it, from x 79.7%. */
+.stream-cta {
+  position: absolute;
+  left: 25.6%;
+  top: 70.5%;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  color: var(--tk-magenta);
+  font-family: 'DM Sans', sans-serif;
+  /* Capped like the artwork it sits on, so it stays in proportion to the copy */
+  font-size: clamp(10px, 1.05vw, 13px);
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  padding: clamp(8px, 0.85vw, 11px) clamp(14px, 1.9vw, 26px);
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+}
+.stream-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+  background: #fff5fa;
+}
+.stream-cta-dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--tk-magenta);
+  box-shadow: 0 0 0 3px rgba(211,3,107,0.22);
+  animation: live-pulse 1.5s ease-in-out infinite;
+}
+.stream-cta.is-disabled {
+  background: rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.8);
+  box-shadow: none;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.stream-cta.is-disabled .stream-cta-dot {
+  background: rgba(255,255,255,0.65);
+  box-shadow: none;
+  animation: none;
+}
+
+@media (max-width: 767px) {
+  /* The tall artwork is magenta edge to edge and spans the full width */
+  .stream-banner { background: var(--tk-magenta); }
+  .stream-banner-inner { max-width: none; }
+  /* Below the copy, in the open magenta to the left of the Telekom logo */
+  .stream-cta {
+    left: 17.1%;
+    top: 88.6%;
+    font-size: clamp(10px, 3.1vw, 14px);
+    padding: clamp(7px, 2vw, 12px) clamp(14px, 4vw, 24px);
+    gap: 8px;
+  }
+  .stream-cta-dot { width: 7px; height: 7px; }
+}
+
 .donate-banner {
   background: linear-gradient(135deg, #0a4545 0%, #126f6f 100%);
   padding: 15px 24px;
