@@ -6,7 +6,8 @@
  *   B  Player 1   one name, or "A / B" for doubles
  *   C  Player 2   same
  *   D  Status     Завршен | Во тек | Не започнат
- *   E  Livescore  link to the live scoreboard page (embedded, cropped)
+ *   E  Livescore  link to the live scoreboard page — ignored while D says
+ *                 "Не започнат", so a link filled in early shows nothing yet
  *   F  Stream     link opened by the "Гледај" button
  *   G  Statistic  link opened by the "Статистика" button
  *
@@ -264,12 +265,16 @@
     }
 
     var rows = (data.table.rows || []).map(function (r) {
+      var status = statusOf(cell(r, 3));
       return {
         time: padTime(cell(r, 0)),
         p1: cell(r, 1),
         p2: cell(r, 2),
-        status: statusOf(cell(r, 3)),
-        live: link(r, 4),
+        status: status,
+        // A match that has not started has no score to show, so its scoreboard
+        // link is ignored until the sheet moves it on — the link is often filled
+        // in ahead of time.
+        live: status.key === 'soon' ? '' : link(r, 4),
         stream: link(r, 5),
         stats: link(r, 6)
       };

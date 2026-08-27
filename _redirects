@@ -2,3 +2,5 @@
 /2026.html /mo26.html 301
 # Same-origin proxy for the Tennis Math live score JSON (their API sends no CORS headers)
 /livescore/* https://tableau.tennis-math.com/score/:splat 200
+# Unlisted clock page — reachable only by typing the URL
+/official-clock /official-clock.html 200
