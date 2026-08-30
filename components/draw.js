@@ -7,8 +7,18 @@
 
   // Match dash separators: em-dash, en-dash, hyphen surrounded by spaces
   var SEP = '\\s+[\\u2014\\u2013\\-]\\s+';
-  var RE_DEF  = new RegExp('^(.+?)\\s+def\\.?\\s+(.+?)' + SEP + '(.+)$', 'i');
-  var RE_NAME = new RegExp('^(.+?)' + SEP + '(.+)$');
+  // One set as the sheets write it: 6-2, 10-4, [11-9], 7-6 (5). A score is one
+  // or more of those, optionally closed by a retirement or walkover — or just
+  // the walkover on its own.
+  var SET = '\\[?\\d{1,2}[-\\u2013\\u2014]\\d{1,2}\\]?(?:\\s*\\(\\d+\\))?';
+  var ENDED = 'W\\.?\\s*O\\.?|RET(?:\\.|IRED)?|WALKOVER';
+  var SCORE = '(?:' + SET + ')(?:\\s+(?:' + SET + '))*(?:\\s+(?:' + ENDED + '))?|' + ENDED;
+
+  var RE_DEF_SEP    = new RegExp('^(.+?)\\s+def\\.?\\s+(.+?)' + SEP + '(.+)$', 'i');
+  var RE_DEF_SCORE  = new RegExp('^(.+?)\\s+def\\.?\\s+(.+?)\\s+(' + SCORE + ')\\s*$', 'i');
+  var RE_DEF_ONLY   = new RegExp('^(.+?)\\s+def\\.?\\s+(.+)$', 'i');
+  var RE_NAME_SEP   = new RegExp('^(.+?)' + SEP + '(.+)$');
+  var RE_NAME_SCORE = new RegExp('^(.+?)\\s+(' + SCORE + ')\\s*$', 'i');
 
   var seq = 0;
 
@@ -24,7 +34,9 @@
    * The draw size (4/8/16/32/64) is derived from how many players sit in
    * column A, so the round columns shift automatically with it.
    *
-   * Round cells accept either "Winner — score" or "Winner def. Loser — score".
+   * Round cells accept "Winner", "Winner — score", "Winner score",
+   * "Winner def. Loser — score" and "Winner def Loser": the dash before a score
+   * is optional, because a score is recognised by its own shape.
    * Within a column the cells are read top-to-bottom in match order, so the
    * row spacing between them does not matter.
    */
@@ -62,19 +74,47 @@
     return '';
   }
 
-  function sameName(a, b) {
-    if (!a || !b) return false;
-    return a.trim().toLowerCase() === b.trim().toLowerCase();
+  // Column A may tag a player with the weekend they play ("[W1] Милан Радојчиќ")
+  // and seeds carry "[1]" / "[WC]", while the result columns hold the bare name.
+  // Every leading [tag] is therefore dropped before two names are compared, so a
+  // draw works whether or not the sheet uses the tags.
+  var RE_TAGS = /^\s*(?:\[[^\]]*\]\s*)+/;
+  // Only the weekend tag is bookkeeping; the seed is worth showing to a reader.
+  var RE_WEEKEND = /^\s*\[W\d+\]\s*/i;
+
+  function stripTags(name) {
+    return String(name == null ? '' : name).replace(RE_TAGS, '').trim();
   }
 
-  // Accepts "Winner def. Loser — score" or "Winner — score"
+  function displayName(name) {
+    return String(name == null ? '' : name).replace(RE_WEEKEND, '').trim();
+  }
+
+  function sameName(a, b) {
+    if (!a || !b) return false;
+    return stripTags(a).toLowerCase() === stripTags(b).toLowerCase();
+  }
+
+  /**
+   * Reads one round cell into winner / loser / score.
+   *
+   * The sheets are not consistent about the dash between a name and its score,
+   * so a score is recognised by its own shape too. Accepted forms:
+   *
+   *   Winner def. Loser — 6-1 6-2      Winner def Loser 6-1 6-2
+   *   Winner def Loser                 Winner — 6-1 6-2
+   *   Winner 0-6 6-2 10-4              Winner
+   */
   function parseResult(str) {
     if (!str) return null;
-    var m = String(str).match(RE_DEF);
+    var s = String(str).trim();
+    var m = s.match(RE_DEF_SEP) || s.match(RE_DEF_SCORE);
     if (m) return { winner: m[1].trim(), loser: m[2].trim(), score: m[3].trim() };
-    m = String(str).match(RE_NAME);
+    m = s.match(RE_DEF_ONLY);
+    if (m) return { winner: m[1].trim(), loser: m[2].trim(), score: '' };
+    m = s.match(RE_NAME_SEP) || s.match(RE_NAME_SCORE);
     if (m) return { winner: m[1].trim(), loser: '', score: m[2].trim() };
-    return { winner: String(str).trim(), loser: '', score: '' };
+    return { winner: s, loser: '', score: '' };
   }
 
   // Number of players in column A, rounded up to a power of two.
@@ -128,7 +168,7 @@
   }
 
   function isBye(name) {
-    return !!name && String(name).trim().toUpperCase() === 'BYE';
+    return !!name && stripTags(name).toUpperCase() === 'BYE';
   }
 
   function playerRow(name, score, isWinner) {
@@ -139,7 +179,7 @@
         + '<span class="dp-score"></span></div>';
     }
     return '<div class="draw-player' + (isWinner ? ' winner' : '') + '">'
-      + '<span class="dp-name">' + escapeHtml(name) + '</span>'
+      + '<span class="dp-name">' + escapeHtml(displayName(name)) + '</span>'
       + '<span class="dp-score">' + escapeHtml(score || '') + '</span>'
       + '</div>';
   }
@@ -275,7 +315,7 @@
     var champHtml = '<div class="draw-champion-card' + (champ ? '' : ' empty') + '">'
       + '<div class="ch-icon">&#127942;</div>'
       + '<div class="ch-label">Шампион</div>'
-      + '<div class="ch-name">' + (champ ? escapeHtml(champ) : '&mdash;') + '</div>'
+      + '<div class="ch-name">' + (champ ? escapeHtml(displayName(champ)) : '&mdash;') + '</div>'
       + '</div>';
 
     var thirdRaw = getCell(rows[0], nRounds + 2);

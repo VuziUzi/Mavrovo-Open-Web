@@ -15,10 +15,10 @@
  * what a visitor can click. Days are grouped into weekends and each day owns a
  * URL hash (#raspored-28-avgust), so a single day is shareable.
  *
- * Scores: Tennis Math publishes a match as JSON at /score/<id>, but without CORS
- * headers, so the browser cannot read it directly. Netlify proxies it same-origin
- * (see _redirects: /livescore/*), which lets the score render as a native card in
- * the site's own styling. Where that proxy is missing — a plain static host, a
+ * Scores: the scoreboard app publishes a match as JSON at /score/<id>, but without
+ * CORS headers, so the browser cannot read it directly. Netlify proxies it
+ * same-origin (see _redirects: /score-api/*, one prefix per scoreboard host),
+ * which lets the score render as a native card in the site's own styling. Where that proxy is missing — a plain static host, a
  * local preview — the card falls back to the scoreboard page itself, embedded in
  * an iframe cropped to the board in its top-left corner.
  *
@@ -38,8 +38,11 @@
   var REFRESH_MS = 60000;
   // Live scores move faster than the sheet does, so they get their own beat.
   var SCORE_REFRESH_MS = 20000;
-  // Netlify rewrite that fronts https://tableau.tennis-math.com/score/<id>
-  var SCORE_PROXY = '/livescore/';
+  // Netlify rewrites that front each scoreboard host's /score/<id> (see _redirects)
+  var SCORE_PROXIES = {
+    'prod.server.sevencourts.com': '/score-api/sevencourts/',
+    'tableau.tennis-math.com': '/score-api/tennis-math/'
+  };
 
   var STATUS = {
     'завршен': { key: 'done', label: 'Завршен' },
@@ -379,10 +382,12 @@
     Array.prototype.forEach.call(autos, function (el) { self._mountScore(el); });
   };
 
-  /** The board id is the last path segment of the scoreboard link. */
-  function scoreId(url) {
-    var m = String(url || '').match(/\/tableau\/([A-Za-z0-9_.-]+)/);
-    return m ? m[1] : '';
+  /** Splits a scoreboard link into the proxy prefix for its host and the board id. */
+  function boardRef(url) {
+    var m = String(url || '').match(/^https?:\/\/([^/]+)\/tableau\/([A-Za-z0-9_.-]+)/);
+    if (!m) return null;
+    var prefix = SCORE_PROXIES[m[1]];
+    return prefix ? { prefix: prefix, id: m[2] } : null;
   }
 
   /**
@@ -395,18 +400,18 @@
     if (!src) return;
     box.classList.add('is-on');
 
-    var id = scoreId(src);
-    if (!id) { mountFrame(box, src); return; }
+    var ref = boardRef(src);
+    if (!ref) { mountFrame(box, src); return; }
 
     var self = this;
     box.innerHTML = '<div class="sched-score-card is-loading"><span></span></div>';
 
     var live = box.hasAttribute('data-auto');
-    fetchScore(id).then(function (data) {
+    fetchScore(ref).then(function (data) {
       self._paintScore(box, src, data);
       // Only a running match keeps changing, so only those are polled.
       if (live) {
-        self.scoreBoxes.push({ box: box, src: src, id: id });
+        self.scoreBoxes.push({ box: box, src: src, ref: ref });
         self._pollScores();
       }
     }, function () {
@@ -414,9 +419,9 @@
     });
   };
 
-  function fetchScore(id) {
+  function fetchScore(ref) {
     if (!window.fetch) return Promise.reject(new Error('no fetch'));
-    return fetch(SCORE_PROXY + encodeURIComponent(id), { cache: 'no-store' })
+    return fetch(ref.prefix + encodeURIComponent(ref.id), { cache: 'no-store' })
       .then(function (r) {
         if (!r.ok) throw new Error('HTTP ' + r.status);
         return r.json();
@@ -442,7 +447,7 @@
       if (!self.scoreBoxes.length || !self.container.offsetParent) return;
       self.scoreBoxes.forEach(function (entry) {
         if (!entry.box.isConnected) return;
-        fetchScore(entry.id).then(function (data) {
+        fetchScore(entry.ref).then(function (data) {
           if (!entry.box.isConnected) return;
           self._paintScore(entry.box, entry.src, data);
         }, function () { /* keep the last good score on screen */ });

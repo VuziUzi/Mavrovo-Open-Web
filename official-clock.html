@@ -1,12 +1,13 @@
+<meta charset="utf-8">
 <title>MY:TIME x LACOSTE</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600&display=swap">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #080808;
-    --accent: #b8d400;
-    --hand: #f2f2f0;
+    --bg: #000;
+    --accent: #ccee00;
+    --hand: #fff;
   }
 
   html, body {
@@ -66,18 +67,18 @@
   }
 
   .top-brand img {
-    height: 34px;
+    height: 102px;
     width: auto;
     filter: invert(1);
-    opacity: 0.82;
+    opacity: 1;
   }
 
   .brand-rule {
-    width: 140px;
-    height: 1px;
+    width: 220px;
+    height: 3px;
     margin: 16px 0 51px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.65;
+    background: var(--accent);
+    opacity: 1;
   }
 
   .clock-wrap {
@@ -124,8 +125,8 @@
     height: 594px;
     border-radius: 50%;
     position: relative;
-    background: radial-gradient(ellipse at 38% 32%, #151515 0%, #090909 55%, #050505 100%);
-    box-shadow: inset 0 0 100px rgba(0,0,0,0.95);
+    background: #000;
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,0.14);
     overflow: hidden;
   }
 
@@ -184,28 +185,28 @@
   }
 
   .hand-hour {
-    width: 7px;
+    width: 12px;
     height: 158px;
-    margin-left: -3.5px;
-    background: linear-gradient(to top, rgba(200,200,198,0.75) 0%, #f2f2f0 55%, rgba(255,255,255,0.55) 100%);
+    margin-left: -6px;
+    background: #fff;
     border-radius: 4px 4px 3px 3px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.85);
+    box-shadow: 0 0 12px rgba(0,0,0,0.9);
   }
 
   .hand-minute {
-    width: 4px;
+    width: 7px;
     height: 228px;
-    margin-left: -2px;
-    background: linear-gradient(to top, rgba(200,200,198,0.65) 0%, #f2f2f0 65%, rgba(255,255,255,0.45) 100%);
+    margin-left: -3.5px;
+    background: #fff;
     border-radius: 3px 3px 2px 2px;
-    box-shadow: 0 0 7px rgba(0,0,0,0.8);
+    box-shadow: 0 0 10px rgba(0,0,0,0.9);
   }
 
   .hand-second {
-    width: 2px;
+    width: 4px;
     height: 255px;
-    margin-left: -1px;
-    background: linear-gradient(to top, #b8d400 0%, #ccee00 70%, #e0ff00 100%);
+    margin-left: -2px;
+    background: var(--accent);
     box-shadow: 0 0 10px rgba(184,212,0,0.7), 0 0 24px rgba(184,212,0,0.25);
     border-radius: 2px;
   }
@@ -222,6 +223,29 @@
     border-radius: 2px;
   }
 
+  /* Large readout under the dial — the one people actually read at a glance */
+  .big-time {
+    margin-top: 44px;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    font-size: 132px;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 30px rgba(0,0,0,0.9);
+  }
+  .big-time .sep { color: var(--accent); }
+  .big-date {
+    margin-top: 10px;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 500;
+    font-size: 30px;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.72);
+  }
+
   .digital-display {
     position: absolute;
     bottom: 162px;
@@ -229,9 +253,10 @@
     transform: translateX(-50%);
     font-family: 'Rajdhani', sans-serif;
     font-weight: 300;
-    font-size: 14px;
+    font-size: 20px;
+    font-weight: 600;
     letter-spacing: 0.3em;
-    color: rgba(242,242,240,0.28);
+    color: rgba(255,255,255,0.75);
     text-transform: uppercase;
     z-index: 15;
     white-space: nowrap;
@@ -247,9 +272,10 @@
     white-space: nowrap;
     font-family: 'Rajdhani', sans-serif;
     font-weight: 300;
-    font-size: 12px;
+    font-size: 15px;
+    font-weight: 600;
     letter-spacing: 0.25em;
-    color: rgba(242,242,240,0.2);
+    color: rgba(255,255,255,0.6);
     text-transform: uppercase;
   }
 </style>
@@ -284,6 +310,9 @@
     </div>
   </div>
 </div>
+
+<div class="big-time" id="bigTime">--<span class="sep">:</span>--<span class="sep">:</span>--</div>
+<div class="big-date" id="bigDate"></div>
 </div>
 </div>
 
@@ -325,15 +354,14 @@
     line.setAttribute('y2', y2.toFixed(2));
 
     if (isQuarter) {
-      line.setAttribute('stroke', '#b8d400');
-      line.setAttribute('stroke-width', '3.5');
-      line.setAttribute('opacity', '0.88');
+      line.setAttribute('stroke', '#ccee00');
+      line.setAttribute('stroke-width', '7');
     } else if (isMajor) {
-      line.setAttribute('stroke', 'rgba(242,242,240,0.55)');
-      line.setAttribute('stroke-width', '2');
+      line.setAttribute('stroke', '#fff');
+      line.setAttribute('stroke-width', '5');
     } else {
-      line.setAttribute('stroke', 'rgba(242,242,240,0.18)');
-      line.setAttribute('stroke-width', '1');
+      line.setAttribute('stroke', 'rgba(255,255,255,0.7)');
+      line.setAttribute('stroke-width', '2.5');
     }
     svg.appendChild(line);
 
@@ -348,9 +376,9 @@
       text.setAttribute('text-anchor', 'middle');
       text.setAttribute('dominant-baseline', 'central');
       text.setAttribute('font-family', 'Rajdhani, sans-serif');
-      text.setAttribute('fill', isQuarter ? 'rgba(242,242,240,0.72)' : 'rgba(242,242,240,0.36)');
-      text.setAttribute('font-size', isQuarter ? '22' : '17');
-      text.setAttribute('font-weight', isQuarter ? '500' : '300');
+      text.setAttribute('fill', isQuarter ? '#fff' : 'rgba(255,255,255,0.85)');
+      text.setAttribute('font-size', isQuarter ? '34' : '26');
+      text.setAttribute('font-weight', isQuarter ? '600' : '500');
       text.setAttribute('letter-spacing', '1');
       text.textContent = romanNumerals[i / 5];
       svg.appendChild(text);
@@ -360,7 +388,7 @@
   // Subtle concentric ring
   const ring = document.createElementNS(NS, 'circle');
   ring.setAttribute('cx', cx); ring.setAttribute('cy', cy); ring.setAttribute('r', r - 1);
-  ring.setAttribute('fill', 'none'); ring.setAttribute('stroke', 'rgba(255,255,255,0.03)'); ring.setAttribute('stroke-width', '1');
+  ring.setAttribute('fill', 'none'); ring.setAttribute('stroke', 'rgba(255,255,255,0.16)'); ring.setAttribute('stroke-width', '2');
   svg.appendChild(ring);
 
   // Clock update
@@ -369,6 +397,8 @@
   const secondHand = document.getElementById('secondHand');
   const digitalTime = document.getElementById('digitalTime');
   const dateDisplay = document.getElementById('dateDisplay');
+  const bigTime = document.getElementById('bigTime');
+  const bigDate = document.getElementById('bigDate');
 
   const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -392,12 +422,14 @@
     const mm = String(m).padStart(2,'0');
     const ss = String(s).padStart(2,'0');
     digitalTime.textContent = hh + ' : ' + mm + ' : ' + ss;
+    bigTime.innerHTML = hh + '<span class="sep">:</span>' + mm + '<span class="sep">:</span>' + ss;
 
     const day = DAYS[now.getDay()];
     const date = now.getDate();
     const month = MONTHS[now.getMonth()];
     const year = now.getFullYear();
     dateDisplay.textContent = day + '  ·  ' + month + ' ' + date + ', ' + year;
+    bigDate.textContent = day + '  ·  ' + month + ' ' + date + ', ' + year;
 
     requestAnimationFrame(updateClock);
   }

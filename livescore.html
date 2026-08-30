@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Резултат во живо | Mavrovo Open 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=4">
+<link rel="shortcut icon" type="image/png" href="favicon.png?v=4">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal-deeper: #0a4545;
+    --teal: #1a7a7a;
+    --lime: #b8d834;
+    --lime-light: #d4eb6e;
+    --ink: #f4fbf7;
+  }
+
+  html, body { height: 100%; }
+
+  body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2vh;
+    padding: clamp(16px, 3vh, 46px) clamp(16px, 3vw, 56px);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 42%, rgba(184,216,52,0.10), transparent 70%),
+      linear-gradient(160deg, #0d5252 0%, var(--teal-deeper) 45%, #062f2f 100%);
+    overflow: hidden;
+  }
+
+  /* Header ---------------------------------------------------------- */
+  .ls-head {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: clamp(12px, 1.6vw, 26px);
+  }
+  .ls-logo { height: clamp(38px, 5.2vh, 76px); width: auto; display: block; }
+  .ls-head-text { display: flex; flex-direction: column; gap: 4px; }
+  .ls-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(15px, 1.5vw, 26px);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #fff;
+  }
+  .ls-sub {
+    font-size: clamp(9px, 0.75vw, 13px);
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.42);
+  }
+
+  /* Status pill ------------------------------------------------------ */
+  .ls-status {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: clamp(6px, 0.7vh, 11px) clamp(14px, 1.4vw, 24px);
+    border-radius: 999px;
+    background: rgba(209,32,60,0.16);
+    border: 1px solid rgba(255,120,120,0.45);
+    color: #ffd9d9;
+    font-size: clamp(10px, 0.85vw, 15px);
+    font-weight: 800;
+    letter-spacing: 2.4px;
+    text-transform: uppercase;
+  }
+  .ls-status::before {
+    content: '';
+    width: clamp(8px, 0.7vw, 12px);
+    height: clamp(8px, 0.7vw, 12px);
+    border-radius: 50%;
+    background: #ff5252;
+    box-shadow: 0 0 0 4px rgba(255,82,82,0.2);
+    animation: ls-pulse 1.5s ease-in-out infinite;
+  }
+  .ls-status.is-final {
+    background: rgba(184,216,52,0.14);
+    border-color: rgba(184,216,52,0.45);
+    color: var(--lime-light);
+  }
+  .ls-status.is-final::before { background: var(--lime); box-shadow: none; animation: none; }
+  @keyframes ls-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(0.75); }
+  }
+  @media (prefers-reduced-motion: reduce) { .ls-status::before { animation: none; } }
+  body:not(.is-live) .ls-status { visibility: hidden; }
+
+  /* Middle band ------------------------------------------------------ */
+  .ls-main {
+    flex: 1 1 auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+  }
+
+  /* Score card ------------------------------------------------------- */
+  .ls-card {
+    width: min(1500px, 94vw);
+    padding: clamp(20px, 3.4vh, 54px) clamp(22px, 3.2vw, 64px);
+    border-radius: clamp(16px, 1.6vw, 30px);
+    background: linear-gradient(150deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03));
+    border: 1px solid rgba(255,255,255,0.13);
+    box-shadow: 0 30px 90px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.09);
+    backdrop-filter: blur(3px);
+  }
+  .ls-divider {
+    height: 1px;
+    margin: clamp(12px, 2vh, 30px) 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+  }
+  .ls-row {
+    display: grid;
+    grid-template-columns: clamp(14px, 1.4vw, 26px) minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: clamp(12px, 1.8vw, 34px);
+  }
+  .ls-serve {
+    width: clamp(12px, 1.2vw, 22px);
+    height: clamp(12px, 1.2vw, 22px);
+    border-radius: 50%;
+    background: transparent;
+  }
+  .ls-serve.is-on {
+    background: var(--lime);
+    box-shadow: 0 0 0 clamp(4px, 0.4vw, 7px) rgba(184,216,52,0.22), 0 0 26px rgba(184,216,52,0.55);
+  }
+  .ls-name {
+    font-size: clamp(26px, 4.4vw, 88px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: rgba(255,255,255,0.9);
+  }
+  .ls-sets { display: flex; gap: clamp(8px, 1vw, 20px); }
+  .ls-set {
+    min-width: clamp(38px, 4.4vw, 92px);
+    padding: clamp(4px, 0.8vh, 12px) 0;
+    border-radius: clamp(8px, 0.8vw, 16px);
+    background: rgba(0,0,0,0.22);
+    text-align: center;
+    font-size: clamp(26px, 4vw, 80px);
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: rgba(255,255,255,0.88);
+  }
+  .ls-game {
+    min-width: clamp(74px, 8vw, 168px);
+    padding: clamp(4px, 0.8vh, 12px) clamp(8px, 0.8vw, 18px);
+    border-radius: clamp(8px, 0.8vw, 16px);
+    background: rgba(184,216,52,0.14);
+    border: 1px solid rgba(184,216,52,0.35);
+    text-align: center;
+    font-size: clamp(30px, 4.6vw, 92px);
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: var(--lime-light);
+  }
+  .ls-card.is-final .ls-row { opacity: 0.55; }
+  .ls-card.is-final .ls-row.is-winner { opacity: 1; }
+  .ls-row.is-winner .ls-name { color: #fff; }
+  .ls-row.is-winner .ls-set { color: var(--lime-light); background: rgba(184,216,52,0.16); }
+
+  /* Fallback embed --------------------------------------------------- */
+  .ls-frame {
+    position: relative;
+    width: min(1400px, 92vw);
+    height: min(340px, 34vh);
+    overflow: hidden;
+    border-radius: clamp(12px, 1.4vw, 24px);
+    background: #5f747d;
+    box-shadow: 0 30px 90px rgba(0,0,0,0.45);
+  }
+  .ls-frame iframe {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 600px;
+    height: 130px;
+    border: 0;
+    transform: translate(-50%, -50%) scale(2.3);
+    transform-origin: center center;
+    pointer-events: none;
+  }
+
+  /* Waiting / error states ------------------------------------------- */
+  .ls-state { text-align: center; max-width: 900px; }
+  .ls-state-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 3.4vw, 58px);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: clamp(10px, 1.4vh, 20px);
+  }
+  .ls-state-text {
+    font-size: clamp(14px, 1.3vw, 22px);
+    line-height: 1.6;
+    color: rgba(255,255,255,0.55);
+  }
+  .ls-state.is-loading .ls-state-title { color: rgba(255,255,255,0.6); }
+
+  /* Footer ----------------------------------------------------------- */
+  .ls-foot {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: clamp(10px, 1.2vw, 20px);
+    font-size: clamp(9px, 0.75vw, 13px);
+    font-weight: 600;
+    letter-spacing: 2.6px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.28);
+  }
+  .ls-foot a { color: inherit; text-decoration: none; }
+  .ls-foot a:hover { color: var(--lime); }
+  .ls-foot-rule { width: clamp(40px, 6vw, 120px); height: 1px; background: rgba(255,255,255,0.16); }
+
+  @media (max-width: 700px) {
+    .ls-row { grid-template-columns: clamp(10px, 3vw, 16px) minmax(0, 1fr) auto; row-gap: 10px; }
+    .ls-game { grid-column: 3; }
+    .ls-name { font-size: clamp(22px, 7vw, 40px); }
+  }
+</style>
+</head>
+<body>
+
+<header class="ls-head">
+  <img class="ls-logo" src="logo.png" alt="Mavrovo Open">
+  <div class="ls-head-text">
+    <div class="ls-title">Mavrovo Open 2026</div>
+    <div class="ls-sub">Резултат во живо</div>
+  </div>
+</header>
+
+<div class="ls-status" id="ls-status">Во живо</div>
+
+<main class="ls-main">
+  <div class="ls-state is-loading" id="ls-state">
+    <div class="ls-state-title">Се вчитува...</div>
+  </div>
+  <div id="ls-board" hidden></div>
+</main>
+
+<footer class="ls-foot">
+  <span>mavrovoopen.com</span>
+  <span class="ls-foot-rule"></span>
+  <a id="ls-link" href="#" target="_blank" rel="noopener noreferrer">Целосен резултат</a>
+</footer>
+
+<script src="components/livescore.js"></script>
+</body>
+</html>
