@@ -942,6 +942,17 @@
   </div>
 </div>
 
+<div class="section" id="dvojki-pro" style="background:#0d5252;padding:80px 24px">
+  <div style="max-width:1000px;margin:0 auto">
+    <div class="section-tag"><div class="section-tag-line"></div><span class="section-tag-text" style="color:var(--lime)">Двојки Про</span></div>
+    <h2 class="playfair" style="font-size:clamp(26px,4vw,40px);color:white;margin-bottom:12px">Двојки Про Турнир</h2>
+    <p style="color:rgba(255,255,255,0.7);font-size:15.5px;line-height:1.7;max-width:620px;margin-bottom:34px">
+      Тимовите што играат во Про конкуренцијата. Отвори тим за да ги видиш профилите на двајцата играчи.
+    </p>
+    <div id="mo26-doubles"></div>
+  </div>
+</div>
+
 <div class="section" style="background:var(--teal-deeper);padding:80px 24px">
   <div style="max-width:1000px;margin:0 auto">
     <div class="section-tag"><div class="section-tag-line"></div><span class="section-tag-text" style="color:var(--lime)">Промо</span></div>
@@ -1397,7 +1408,13 @@ document.addEventListener('keydown', function(e) {
   var lbClose = lb.querySelector('.lightbox-close');
 
   function open(src) { lbImg.src = src; lb.classList.add('open'); document.body.style.overflow = 'hidden'; }
-  function close()   { lb.classList.remove('open'); lbImg.src = ''; document.body.style.overflow = ''; }
+  function close() {
+    lb.classList.remove('open');
+    lbImg.src = '';
+    // A photo can be opened from inside the doubles modal, which still needs
+    // the page behind it locked once the photo closes again.
+    document.body.style.overflow = document.querySelector('.dbl-modal.is-open') ? 'hidden' : '';
+  }
 
   lb.addEventListener('click', function(e) { if (e.target === lb || e.target === lbClose) close(); });
   document.addEventListener('keydown', function(e) {
@@ -1406,7 +1423,10 @@ document.addEventListener('keydown', function(e) {
 
   document.body.addEventListener('click', function(e) {
     var t = e.target;
-    if (!t || !t.classList || !t.classList.contains('pphoto')) return;
+    if (!t || !t.classList) return;
+    // Player tables mark their photos with .pphoto; other sections opt in with
+    // data-photo-zoom (the doubles cards and profiles).
+    if (!t.classList.contains('pphoto') && !t.hasAttribute('data-photo-zoom')) return;
     var src = t.getAttribute('src') || '';
     if (!src) return;
     // Upgrade Drive thumbnail size for higher-res view
@@ -1419,6 +1439,7 @@ document.addEventListener('keydown', function(e) {
 <script src="components/gallery.js"></script>
 <script src="components/sponsors.js"></script>
 <script src="components/draw.js"></script>
+<script src="components/doubles.js"></script>
 <script>
 new DriveGallery({ containerId: 'drive-gallery-mo26', folderId: '1Z54KINKPIZ7tSOXCUtkRKw3lg2E0aXeo' });
 new DriveSponsors({ containerId: 'sponsors-mo26', folderId: '18PavSAhGxlKO4yE53KAYaSkspn6VpfAM' });
@@ -1456,6 +1477,12 @@ window.mo26Draws = {
     emptyHtml: DRAW_EMPTY_HTML
   })
 };
+
+// ---- DOUBLES PRO TEAMS ----
+window.mo26Doubles = new DoublesTeams({
+  containerId: 'mo26-doubles',
+  sectionId: 'dvojki-pro'
+});
 
 // ---- MATCH SCHEDULE (one sheet tab per playing day) ----
 // #raspored-29-avgust opens that day directly, without loading day one first.
