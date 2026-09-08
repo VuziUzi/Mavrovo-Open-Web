@@ -1367,12 +1367,23 @@ img.dbl-profile-photo:hover { transform: scale(1.02); }
 .dbl-profile-info.is-empty { color: #93a1a1; font-size: 14px; text-align: center; }
 
 @media (max-width: 760px) {
-  .dbl-card { grid-template-columns: 30px minmax(0, 1fr); gap: 12px 14px; padding: 16px 16px; }
-  .dbl-card-index { font-size: 17px; align-self: start; padding-top: 4px; }
-  .dbl-more { grid-column: 1 / -1; width: 100%; padding: 12px; }
+  /* No number column on a phone: the players take the full width and the team
+     number moves down next to the button, where there is already a row. */
+  .dbl-card { grid-template-columns: auto minmax(0, 1fr); gap: 14px 12px; padding: 16px; }
+  .dbl-card-players { grid-column: 1 / -1; grid-row: 1; gap: 14px; }
+  .dbl-card-index {
+    grid-column: 1; grid-row: 2;
+    align-self: center;
+    font-size: 15px;
+    padding: 9px 13px;
+    border-radius: 10px;
+    background: rgba(10,69,69,0.07);
+    color: var(--teal-deeper);
+  }
+  .dbl-more { grid-column: 2; grid-row: 2; width: 100%; padding: 12px; }
   .dbl-amp { display: none; }
-  .dbl-photo { width: 68px; height: 68px; }
-  .dbl-photo.is-empty { font-size: 20px; }
+  .dbl-photo { width: 74px; height: 74px; }
+  .dbl-photo.is-empty { font-size: 22px; }
   .dbl-name { font-size: 17px; }
   .dbl-excerpt { font-size: 12.5px; -webkit-line-clamp: 3; }
   .dbl-modal { padding: 12px; }
