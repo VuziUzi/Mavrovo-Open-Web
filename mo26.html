@@ -570,7 +570,7 @@
         <div class="hero-date-month">Септември</div>
       </div>
       <div class="hero-date">
-        <div class="hero-date-days">11 &bull; 12 &bull; 13</div>
+        <div class="hero-date-days">19 &bull; 20</div>
         <div class="hero-date-month">Септември</div>
       </div>
     </div>
@@ -1077,8 +1077,8 @@ if (window.TabRouter) {
       { hash: 'raspored-5-septemvri',  name: 'raspored:5-septemvri' },
       { hash: 'raspored-6-septemvri',  name: 'raspored:6-septemvri' },
       { hash: 'raspored-8-septemvri',  name: 'raspored:8-septemvri' },
-      { hash: 'raspored-12-septemvri', name: 'raspored:12-septemvri' },
-      { hash: 'raspored-13-septemvri', name: 'raspored:13-septemvri' },
+      { hash: 'raspored-19-septemvri', name: 'raspored:19-septemvri' },
+      { hash: 'raspored-20-septemvri', name: 'raspored:20-septemvri' },
       { hash: 'zdrepka-mazi',   name: 'zdrepka-mazi',   alt: ['draw-men'] },
       { hash: 'zdrepka-zeni',   name: 'zdrepka-zeni',   alt: ['draw-women'] },
       { hash: 'zdrepka-dvojki', name: 'zdrepka-dvojki', alt: ['zdrepka-dvojki-pro', 'draw-doubles'] },
@@ -1439,6 +1439,7 @@ document.addEventListener('keydown', function(e) {
 <script src="components/gallery.js"></script>
 <script src="components/sponsors.js"></script>
 <script src="components/draw.js"></script>
+<script src="components/groups.js"></script>
 <script src="components/doubles.js"></script>
 <script>
 new DriveGallery({ containerId: 'drive-gallery-mo26', folderId: '1Z54KINKPIZ7tSOXCUtkRKw3lg2E0aXeo' });
@@ -1467,11 +1468,13 @@ window.mo26Draws = {
     emptyIcon: '&#127922;',
     emptyHtml: DRAW_EMPTY_HTML
   }),
-  'zdrepka-dvojki': new DrawBracket({
+  // Doubles Pro is not a knockout: two groups of three play a round robin and
+  // the group winners meet in the final.
+  'zdrepka-dvojki': new GroupStage({
     containerId: 'draw-dvojki',
     sheetName: 'Draw26 Doubles Pro',
     title: 'Ждрепка Двојки Про',
-    subtitle: 'Турнирска ждрепка и резултати од натпреварите',
+    subtitle: 'Две групи по три двојки — првите од двете групи играат во финалето',
     emptyTitle: 'Ждрепка Двојки Про',
     emptyIcon: '&#127922;',
     emptyHtml: DRAW_EMPTY_HTML
@@ -1515,8 +1518,8 @@ window.mo26Schedule = new MatchSchedule({
     {
       label: 'Викенд 3 — Големо финале',
       days: [
-        { id: '12-septemvri', label: '12 Септември', date: '2026-09-12', gid: '269210945' },
-        { id: '13-septemvri', label: '13 Септември', date: '2026-09-13', gid: '2141534304' }
+        { id: '19-septemvri', label: '19 Септември', date: '2026-09-19', gid: '269210945' },
+        { id: '20-septemvri', label: '20 Септември', date: '2026-09-20', gid: '2141534304' }
       ]
     }
   ],
